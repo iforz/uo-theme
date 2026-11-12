@@ -1,11 +1,11 @@
 # uo-theme
 
-WordPress 区块主题基础模板，版本 **0.1.1**。支持 WordPress 6.6+、PHP 7.4+，GPL-2.0-or-later。
+WordPress 区块主题基础模板，版本 **0.1.2**。支持 WordPress 6.6+、PHP 7.4+，GPL-2.0-or-later。
 
 ## 安装
 
-1. 在仓库运行 `php scripts/package.php` 生成 ZIP，产物保存在公司根目录 `app_packages/uo-theme/wordpress/0.1.1/`。
-2. 在 WordPress 后台进入「外观 → 主题 → 安装主题 → 上传主题」，选择 `uo-theme-0.1.1.zip`，安装并启用。
+1. 在仓库运行 `php scripts/package.php` 生成 ZIP，产物保存在公司根目录 `app_packages/uo-theme/wordpress/0.1.2/`。
+2. 在 WordPress 后台进入「外观 → 主题 → 安装主题 → 上传主题」，选择 `uo-theme-0.1.2.zip`，安装并启用。
 3. 进入「外观 → 编辑器」，设置站点名称、Logo、导航与样式。原生导航区块支持移动端折叠菜单。
 4. 在「设置 → 阅读」选择首页显示最新文章，启用欢迎区与文章网格；选择静态首页则使用常规页面模板。模板中的文字为可翻译的英文默认文案，可在站点编辑器内修改。
 
@@ -55,8 +55,8 @@ php scripts/package.php
 
 ## 自动更新与发布
 
-启用主题后，在主题详情中开启自动更新，或运行 `wp theme auto-updates enable uo-theme`。主题通过原生 WordPress 更新器读取此仓库的最新稳定 Release，校验最低 WordPress/PHP 版本及 ZIP 的 SHA-256。站点需能访问 GitHub，并具备主题目录写权限与正常的 WordPress 定时任务。网络失败时保留当前主题。
+启用主题后，在主题详情中开启自动更新，或运行 `wp theme auto-updates enable uo-theme`。主题通过原生 WordPress 更新器和 GitHub 官方 API 读取此仓库的最新稳定 Release，校验最低 WordPress/PHP 版本及 ZIP 的 SHA-256。站点需能访问 GitHub，并具备主题目录写权限与正常的 WordPress 定时任务。网络失败时保留当前主题。
 
-发布步骤：同步提高 `style.css` 的 Version 和 `readme.txt` 的 Stable tag，运行检查与 `php tests/updates.php`，提交后推送匹配的版本标签（例如 `v0.1.1`）。Release 工作流自动验证标签、打包并发布安装 ZIP、更新清单和校验文件。只有正式标签发布触发站点更新，普通开发提交不会触发。不要编辑已发布标签或替换其资产；修复应发布新版本。
+发布步骤：同步提高 `style.css` 的 Version 和 `readme.txt` 的 Stable tag，运行检查与 `php tests/updates.php`，提交后推送匹配的版本标签（例如 `v0.1.2`）。Release 工作流自动验证标签、打包并发布安装 ZIP、更新清单和校验文件。只有正式标签发布触发站点更新，普通开发提交不会触发。不要编辑已发布标签或替换其资产；修复应发布新版本。
 
 WordPress 按自身定时任务检查与安装，更新存在间隔，不保证实时。当前更新回调随启用的主题加载；切换到无关主题后，不承诺后台继续更新 uo-theme。站点级定制请用子主题或站点编辑器，直接修改主题文件会被新版覆盖。
