@@ -1,0 +1,1 @@
+Translation domain: `uo-theme`. Generate a POT using `wp i18n make-pot . languages/uo-theme.pot --exclude=scripts,docs`. Translate patterns through the standard WordPress gettext workflow. Site Editor changes are stored in the database and are site-specific.

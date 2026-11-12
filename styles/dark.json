@@ -1,0 +1,50 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.6/theme.json",
+  "version": 3,
+  "title": "Forest night",
+  "settings": {
+    "color": {
+      "palette": [
+        {
+          "slug": "paper",
+          "name": "Paper",
+          "color": "#14221c"
+        },
+        {
+          "slug": "surface",
+          "name": "Surface",
+          "color": "#1c3026"
+        },
+        {
+          "slug": "ink",
+          "name": "Ink",
+          "color": "#eef4eb"
+        },
+        {
+          "slug": "muted",
+          "name": "Muted",
+          "color": "#b0c1b4"
+        },
+        {
+          "slug": "accent",
+          "name": "Accent",
+          "color": "#a5dfb6"
+        },
+        {
+          "slug": "line",
+          "name": "Line",
+          "color": "#395043"
+        }
+      ]
+    }
+  },
+  "styles": {
+    "elements": {
+      "button": {
+        "color": {
+          "text": "var:preset|color|paper"
+        }
+      }
+    }
+  }
+}
