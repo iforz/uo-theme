@@ -12,7 +12,7 @@ if ( ! is_dir( $target ) && ! mkdir( $target, 0755, true ) ) { exit( 1 ); }
 $path = "$target/uo-theme-$version.zip";
 $zip = new ZipArchive();
 if ( true !== $zip->open( $path, ZipArchive::CREATE | ZipArchive::OVERWRITE ) ) { exit( 1 ); }
-$paths = array( 'style.css', 'functions.php', 'theme.json', 'LICENSE', 'readme.txt', 'templates', 'parts', 'patterns', 'styles', 'assets' );
+$paths = array( 'style.css', 'functions.php', 'theme.json', 'LICENSE', 'readme.txt', 'templates', 'parts', 'patterns', 'styles', 'assets', 'inc' );
 $files = array();
 foreach ( $paths as $relative ) {
 	if ( is_file( "$root/$relative" ) ) { $files[] = $relative; continue; }
@@ -30,4 +30,12 @@ foreach ( $files as $file ) {
 $zip->close();
 $hash = hash_file( 'sha256', $path );
 file_put_contents( "$path.sha256", "$hash  " . basename( $path ) . "\n" );
+$manifest = array(
+	'version' => $version,
+	'requires' => '6.6',
+	'requires_php' => '7.4',
+	'package' => "https://github.com/iforz/uo-theme/releases/download/v$version/uo-theme-$version.zip",
+	'sha256' => $hash,
+);
+file_put_contents( "$target/uo-theme.json", json_encode( $manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n" );
 echo "$path\nSHA-256: $hash\n";

@@ -6,7 +6,7 @@ function check_result( $condition, $message ) {
 	global $errors;
 	if ( ! $condition ) { $errors[] = $message; }
 }
-foreach ( array_merge( glob( "$root/*.php" ), glob( "$root/patterns/*.php" ), glob( "$root/scripts/*.php" ) ) as $file ) {
+foreach ( array_merge( glob( "$root/*.php" ), glob( "$root/inc/*.php" ), glob( "$root/patterns/*.php" ), glob( "$root/scripts/*.php" ) ) as $file ) {
 	exec( escapeshellarg( PHP_BINARY ) . ' -l ' . escapeshellarg( $file ) . ' 2>&1', $output, $status );
 	check_result( 0 === $status, "PHP syntax: $file" );
 }
@@ -15,7 +15,7 @@ foreach ( array_merge( array( "$root/theme.json" ), glob( "$root/styles/*.json" 
 	check_result( JSON_ERROR_NONE === json_last_error() && 3 === ( $data['version'] ?? null ), "Theme JSON: $file" );
 }
 $css = file_get_contents( "$root/style.css" );
-foreach ( array( 'Theme Name: uo-theme', 'Text Domain: uo-theme', 'Version: 0.1.0', 'Requires at least: 6.6', 'Requires PHP: 7.4' ) as $header ) {
+foreach ( array( 'Theme Name: uo-theme', 'Text Domain: uo-theme', 'Update URI: https://github.com/iforz/uo-theme', 'Requires at least: 6.6', 'Requires PHP: 7.4' ) as $header ) {
 	check_result( false !== strpos( $css, $header ), "Missing header $header" );
 }
 if ( isset( $argv[1] ) ) {

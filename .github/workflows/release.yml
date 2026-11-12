@@ -1,0 +1,29 @@
+name: Publish theme release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check tag matches theme version
+        shell: bash
+        run: |
+          VERSION=$(sed -n 's/^Version: //p' style.css)
+          test "$GITHUB_REF_NAME" = "v$VERSION"
+      - name: Validate and package
+        run: |
+          php scripts/check.php
+          php tests/updates.php
+          php scripts/package.php
+      - name: Publish stable installable assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          VERSION=$(sed -n 's/^Version: //p' style.css)
+          PACKAGE=$(find ../app_packages/uo-theme/wordpress/"$VERSION" -name "uo-theme-$VERSION.zip" -type f)
+          gh release create "$GITHUB_REF_NAME" "$PACKAGE" "$(dirname "$PACKAGE")/uo-theme.json" "${PACKAGE}.sha256" --verify-tag --title "uo-theme $VERSION" --generate-notes

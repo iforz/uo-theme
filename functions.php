@@ -4,6 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once __DIR__ . '/inc/updates.php';
+
 function uo_theme_setup() {
 	load_theme_textdomain( 'uo-theme', get_template_directory() . '/languages' );
 	add_theme_support( 'wp-block-styles' );

@@ -9,3 +9,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate theme source
         run: php scripts/check.php
+      - name: Verify update security and failure paths
+        run: php tests/updates.php

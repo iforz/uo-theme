@@ -2,7 +2,7 @@
 Contributors: iforz
 Requires at least: 6.6
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,6 +13,8 @@ A dependency-free block theme with editable navigation, blog templates, accessib
 Upload the ZIP under Appearance > Themes > Add New. Activate, then customize under Appearance > Editor. Set the reading mode under Settings > Reading.
 
 == Changelog ==
+= 0.1.1 =
+Stable GitHub release updates through the native WordPress updater, with SHA-256 verification.
 = 0.1.0 =
 Initial starter template. Full browser/editor compatibility acceptance remains pending.
 
