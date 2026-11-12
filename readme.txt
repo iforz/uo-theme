@@ -2,7 +2,7 @@
 Contributors: iforz
 Requires at least: 6.6
 Requires PHP: 7.4
-Stable tag: 0.1.2
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,6 +13,8 @@ A dependency-free block theme with editable navigation, blog templates, accessib
 Upload the ZIP under Appearance > Themes > Add New. Activate, then customize under Appearance > Editor. Set the reading mode under Settings > Reading.
 
 == Changelog ==
+= 0.2.0 =
+Two-column journal design, original GPT/Claude/DeepSeek companions, static conversation, adapter extension point, dark mode, reading progress, and reduced-motion support.
 = 0.1.2 =
 Fetch stable release assets through the official GitHub API for restricted server networks.
 Use the configured site title and tagline in the home hero.

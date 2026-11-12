@@ -34,6 +34,11 @@ foreach ( $files as $file ) {
 			function esc_attr__( $text, $domain ) { return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' ); }
 			function esc_url( $url ) { return htmlspecialchars( $url, ENT_QUOTES, 'UTF-8' ); }
 			function home_url( $path ) { return 'https://example.test' . $path; }
+			function esc_html( $text ) { return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' ); }
+			function get_theme_file_uri( $path ) { return 'https://example.test/wp-content/themes/uo-theme/' . $path; }
+			function get_theme_file_path( $path ) { return dirname( __DIR__ ) . '/' . $path; }
+			function wp_count_posts() { return (object) array( 'publish' => 87 ); }
+			function get_feed_link() { return 'https://example.test/feed/'; }
 		}
 		ob_start(); require $file; $content = ob_get_clean();
 	}

@@ -7,5 +7,5 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 ?>
-<!-- wp:group {"align":"wide","className":"uo-hero","style":{"spacing":{"padding":{"bottom":"var:preset|spacing|60"},"margin":{"bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained","justifyContent":"left"}} -->
-<div class="wp-block-group alignwide uo-hero" style="margin-bottom:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)"><!-- wp:site-title {"level":1,"isLink":false,"fontSize":"display"} /--><!-- wp:site-tagline {"textColor":"muted"} /--></div><!-- /wp:group -->
+<!-- wp:group {"align":"wide","className":"uo-hero uo-reveal","layout":{"type":"default"}} -->
+<div class="wp-block-group alignwide uo-hero uo-reveal"><!-- wp:html --><div class="uo-hero-eyebrow"><span aria-hidden="true"></span> 灵感在这里，慢慢发生 <i aria-hidden="true">✦</i></div><!-- /wp:html --><!-- wp:site-title {"level":1,"isLink":false} /--><!-- wp:site-tagline /--><!-- wp:html --><div class="uo-hero-footnote"><span>技术 · 工具 · 生活</span><span class="uo-hero-line" aria-hidden="true"></span><span>保持好奇，继续创造 ↗</span></div><div class="uo-hero-art" aria-hidden="true"><span class="uo-orbit uo-orbit-one"></span><span class="uo-orbit uo-orbit-two"></span><span class="uo-orbit uo-orbit-three"></span><b>✦</b><i class="uo-art-dot"></i></div><!-- /wp:html --></div><!-- /wp:group -->

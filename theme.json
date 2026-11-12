@@ -4,15 +4,15 @@
   "settings": {
     "appearanceTools": true,
     "layout": {
-      "contentSize": "760px",
-      "wideSize": "1200px"
+      "contentSize": "800px",
+      "wideSize": "1240px"
     },
     "color": {
       "palette": [
         {
           "slug": "paper",
           "name": "Paper",
-          "color": "#f7f6f2"
+          "color": "#f4f7f8"
         },
         {
           "slug": "surface",
@@ -22,22 +22,22 @@
         {
           "slug": "ink",
           "name": "Ink",
-          "color": "#182821"
+          "color": "#253d48"
         },
         {
           "slug": "muted",
           "name": "Muted",
-          "color": "#53645a"
+          "color": "#627985"
         },
         {
           "slug": "accent",
           "name": "Accent",
-          "color": "#245f46"
+          "color": "#2c9a83"
         },
         {
           "slug": "line",
           "name": "Line",
-          "color": "#d9dfd7"
+          "color": "#e6eef0"
         }
       ]
     },
@@ -118,13 +118,13 @@
     "spacing": {
       "blockGap": "1.5rem",
       "padding": {
-        "left": "clamp(1rem, 4vw, 3rem)",
-        "right": "clamp(1rem, 4vw, 3rem)"
+        "left": "24px",
+        "right": "24px"
       }
     },
     "typography": {
       "fontFamily": "var:preset|font-family|system",
-      "fontSize": "var:preset|font-size|medium",
+      "fontSize": "16px",
       "lineHeight": "1.75"
     },
     "elements": {
@@ -161,7 +161,7 @@
     "blocks": {
       "core/site-title": {
         "typography": {
-          "fontSize": "1.5rem",
+          "fontSize": "21px",
           "fontWeight": "700"
         },
         "elements": {
@@ -189,7 +189,7 @@
       },
       "core/navigation": {
         "typography": {
-          "fontSize": "1rem"
+          "fontSize": "14px"
         }
       }
     }
@@ -204,6 +204,11 @@
       "name": "footer",
       "title": "Footer",
       "area": "footer"
+    },
+    {
+      "name": "sidebar",
+      "title": "Sidebar",
+      "area": "uncategorized"
     }
   ],
   "customTemplates": [
