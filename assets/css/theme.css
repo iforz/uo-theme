@@ -277,10 +277,10 @@ body.admin-bar .wp-site-blocks > header { top:32px; }
 @media(max-width:1279px) { .uo-admin-rail { top:auto; left:16px; bottom:20px; width:155px; }.uo-admin-rail summary { padding:6px 10px; }.uo-admin-rail details:not(:hover):not(:focus-within) .uo-admin-links { display:none; }.uo-admin-rail details { display:flex; flex-direction:column-reverse; }.uo-admin-links { max-height:55dvh; overflow:auto; }.uo-admin-rail details[open] .uo-admin-links { display:grid; } }
 /* Independent community animation, never placed inside a sidebar card. */
 .uo-companion-slot { min-height:0; }
-.uo-roamer { --uo-pet-width:156px; position:fixed; top:0; left:0; width:var(--uo-pet-width); z-index:56; user-select:none; }
-.uo-sprite { display:block; position:relative; width:100%; aspect-ratio:192/208; background:none; border:0; padding:0; cursor:grab; touch-action:none; filter:drop-shadow(0 7px 5px #24394f18); }
-.uo-sprite > span { display:block; position:absolute; inset:0; background-size:800% 900%; background-repeat:no-repeat; pointer-events:none; }
-.uo-dragging .uo-sprite { cursor:grabbing; filter:drop-shadow(0 15px 10px #24394f30); }
+.uo-roamer { --uo-pet-width:156px; position:fixed; top:0; left:0; width:var(--uo-pet-width); z-index:56; user-select:none; will-change:transform; }
+.uo-sprite { display:block; position:relative; width:100%; aspect-ratio:192/208; background:none; border:0; padding:0; cursor:grab; touch-action:none; }
+.uo-sprite > span { display:block; position:absolute; inset:0; background-size:800% 900%; background-repeat:no-repeat; pointer-events:none; contain:paint; }
+.uo-dragging .uo-sprite { cursor:grabbing; }
 .uo-pet-controls { display:flex; justify-content:center; gap:4px; position:absolute; bottom:0; left:50%; transform:translate(-50%,65%); opacity:0; transition:opacity .2s; }
 .uo-pet-controls button { width:28px; height:26px; padding:0; border-radius:8px; border:1px solid var(--wp--preset--color--line); background:var(--wp--preset--color--surface); color:var(--wp--preset--color--ink); font-size:13px; }
 .uo-pet-hint { position:absolute; white-space:nowrap; top:0; left:50%; transform:translate(-50%,-90%); font-size:10px; padding:5px 9px; border:1px solid var(--wp--preset--color--line); background:var(--wp--preset--color--surface); color:var(--wp--preset--color--muted); border-radius:20px; opacity:0; pointer-events:none; transition:opacity .2s; }

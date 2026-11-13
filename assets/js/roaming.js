@@ -14,7 +14,8 @@
   pet.style.setProperty('--uo-pet-width', `${width}px`);
   let x = innerWidth - width - 32, y = innerHeight - height - 24;
   let targetX = x, targetY = y, state = 0, frame = 0, elapsed = 0, last = 0, wait = 4;
-  let dragging = null, paused = false, hidden = false, dialog = false, request = 0, loaded = false, loadToken = 0;
+  let dragging = null, paused = false, hidden = false, dialog = false, request = 0, loaded = false, loadToken = 0, timer = 0;
+  let lastPosition = '', lastCell = '', lastAction = -1;
   // Occupied cells verified against the pinned upstream sheets; remaining cells are transparent.
   const frames = [6, 8, 8, 4, 5, 8, 6, 6, 6];
   const durations = [280, 110, 110, 140, 140, 320];
@@ -25,20 +26,22 @@
     targetX = Math.max(0, Math.min(b.maxX, targetX)); targetY = Math.max(b.minY, Math.min(b.maxY, targetY));
   }
   function paint() {
-    pet.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0)`;
-    sprite.style.backgroundPosition = `${frame * 100 / 7}% ${state * 100 / 8}%`;
-    pet.dataset.action = ['idle', 'walk-right', 'walk-left', 'wave', 'jump', 'failed', 'waiting', 'work', 'review'][state];
+    const position = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0)`;
+    const cell = `${frame * 100 / 7}% ${state * 100 / 8}%`;
+    if (position !== lastPosition) { pet.style.transform = position; lastPosition = position; }
+    if (cell !== lastCell) { sprite.style.backgroundPosition = cell; lastCell = cell; }
+    if (state !== lastAction) { lastAction = state; pet.dataset.action = ['idle', 'walk-right', 'walk-left', 'wave', 'jump', 'failed', 'waiting', 'work', 'review'][state]; }
   }
   function changeState(next) { if (state !== next) { state = next; frame = 0; elapsed = 0; } }
   function active() { return loaded && !document.hidden && !hidden && !dialog && !dragging && !paused && !motion.matches; }
   function tick(time) {
     request = 0;
-    const dt = Math.min(.05, Math.max(0, (time - (last || time)) / 1000)); last = time;
+    const dt = Math.min(.5, Math.max(0, (time - (last || time)) / 1000)); last = time;
     if (active()) {
       if (options.roaming) {
         const distance = Math.hypot(targetX - x, targetY - y);
         if (distance > 2) {
-          const step = Math.min(distance, dt * 38);
+          const step = Math.min(distance, Math.min(dt, .05) * 38);
           changeState(targetX >= x ? 1 : 2);
           x += (targetX - x) / distance * step; y += (targetY - y) / distance * step;
         } else {
@@ -53,11 +56,15 @@
       } else changeState(0);
       elapsed += dt * 1000;
       if (elapsed >= durations[frame % durations.length]) { elapsed = 0; frame = (frame + 1) % frames[state]; }
-      clamp(); paint(); request = requestAnimationFrame(tick);
+      clamp(); paint();
+      // Walking needs smooth position updates; idle only wakes for its next atlas cell.
+      const moving = options.roaming && Math.hypot(targetX - x, targetY - y) > 2;
+      timer = setTimeout(() => { timer = 0; if (active()) request = requestAnimationFrame(tick); }, moving ? 33 : Math.max(16, durations[frame % durations.length] - elapsed));
     }
   }
   function schedule() {
     if (request) cancelAnimationFrame(request);
+    clearTimeout(timer); timer = 0;
     request = 0; last = 0;
     if (active()) request = requestAnimationFrame(tick);
     else { changeState(dialog ? 6 : 0); frame = 0; paint(); }
@@ -103,18 +110,26 @@
   document.addEventListener('visibilitychange', schedule);
   motion.addEventListener('change', schedule);
   window.addEventListener('resize', () => { clamp(); paint(); });
-  window.addEventListener('pagehide', () => { if (request) cancelAnimationFrame(request); request = 0; });
+  window.addEventListener('pagehide', () => { if (request) cancelAnimationFrame(request); clearTimeout(timer); timer = 0; request = 0; });
   window.addEventListener('pageshow', schedule);
   // Decode the selected sheet before showing; failed downloads leave a usable text launcher.
   function loadSheet() {
     const token = ++loadToken;
     loaded = false; pet.hidden = true; schedule();
     const image = new Image();
-    const ready = () => { if (token === loadToken) { loaded = true; visibility(); } };
+    image.fetchPriority = 'low';
+    const ready = () => { if (token === loadToken) { sprite.style.backgroundImage = `url(${JSON.stringify(image.src)})`; loaded = true; visibility(); } };
     image.onload = ready;
     image.onerror = () => { if (token === loadToken) { hidden = true; api.close(); } };
-    image.src = window.UOThemeConfig.characters?.[api.getModel()]?.image || '';
-    if (image.complete && image.naturalWidth) ready();
+    const start = () => {
+      if (token !== loadToken) return;
+      image.src = window.UOThemeConfig.characters?.[api.getModel()]?.image || '';
+      if (image.complete && image.naturalWidth) ready();
+    };
+    // The optional large atlas must not compete with first-page content or hold window.load.
+    const defer = () => { if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 1500 }); else setTimeout(start, 100); };
+    if (document.readyState === 'complete') defer();
+    else window.addEventListener('load', defer, { once: true });
   }
   document.addEventListener('uo-theme:companion:model', loadSheet);
   clamp(); paint(); loadSheet(); schedule();

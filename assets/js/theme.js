@@ -67,7 +67,6 @@
     claude: { name: 'Claude · 小柯', tag: '让想法，长出温柔的形状。', alt: 'Claude 橙发书卷社区拟人角色', accent: '#c77d5c', rgb: '199,125,92', greeting: '你好呀，我是小柯。给自己一点留白，让灵感慢慢长出来。', touch: ['谢谢你的招呼。先放松一下肩膀，今天也做得很好。', '如果想法还没成形，就先写下一句不完美的话吧。'], inspiration: ['挑一件最近让你停留的小事，写下它的颜色、声音和感受。细节里经常藏着好故事。', '给正在做的东西留一处呼吸的空间。有时少一点，反而更动人。'] },
     deepseek: { name: 'DeepSeek · 小鲸', tag: '好奇心，是我的小宇宙。', alt: 'DeepSeek 蓝白鲸鱼主题社区拟人角色', accent: '#558ddd', rgb: '85,141,221', greeting: '嗨，我是小鲸。今天也一起潜进知识的海里吧。', touch: ['啵！收到你的招呼啦。小鲸带着好心情，继续陪你逛。', '发现一小片灵感海域！别着急，我们再往下探一点。'], inspiration: ['今天不妨试一个“为什么”：找件习以为常的事，追问三次，说不定就有新发现。', '遇到卡住的问题，换个方向画出来。把复杂关系变成一张小图，也是一种潜水术。'] }
   };
-  const portrait = $('[data-uo-portrait]');
   const stage = $('[data-uo-pet]');
   const replyNode = $('[data-uo-reply]', root);
   const recommendation = $('[data-uo-recommend]', root);
@@ -124,8 +123,6 @@
     $('[data-uo-tagline]', root).textContent = character.tag;
     tabs.forEach((tab) => tab.setAttribute('aria-pressed', String(tab.dataset.uoModel === value)));
     stage.setAttribute('aria-label', `和 ${character.name.split(' · ')[0]} 打招呼`);
-    const image = config.characters?.[value]?.image;
-    if (image) portrait.style.backgroundImage = `url(${JSON.stringify(image)})`;
     stage.setAttribute('aria-label', `${character.alt}，拖动或点击聊天`);
     recommendation.hidden = true;
     root.classList.remove('uo-character-enter');
