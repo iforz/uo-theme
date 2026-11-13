@@ -61,14 +61,14 @@
   }
 
   const root = $('[data-uo-companion]');
-  if (!root) return;
+  if (!root || config.options?.enabled === 0) return;
   const characters = {
-    gpt: { name: 'GPT · 小缇', tag: '把复杂的事，轻轻讲明白。', alt: 'GPT 银白发小龙角原创拟人角色', accent: '#2d9f89', rgb: '45,159,137', greeting: '嗨，我是小缇。把你的好奇心带上，我们一起理清那些小问号。', touch: ['收到你的招呼啦。今天也要给好奇心留一点位置。', '小龙角感应到灵感了！先写下来，再慢慢完善。'], inspiration: ['把今天遇到的一个问题，拆成三个最小步骤。第一步小到能立刻开始就很好。', '试着用一句话解释刚学到的东西。讲得越简单，往往理解得越清楚。'] },
-    claude: { name: 'Claude · 小柯', tag: '让想法，长出温柔的形状。', alt: 'Claude 暖橘发花饰原创拟人角色', accent: '#c77d5c', rgb: '199,125,92', greeting: '你好呀，我是小柯。给自己一点留白，让灵感慢慢长出来。', touch: ['谢谢你的招呼。先放松一下肩膀，今天也做得很好。', '如果想法还没成形，就先写下一句不完美的话吧。'], inspiration: ['挑一件最近让你停留的小事，写下它的颜色、声音和感受。细节里经常藏着好故事。', '给正在做的东西留一处呼吸的空间。有时少一点，反而更动人。'] },
-    deepseek: { name: 'DeepSeek · 小鲸', tag: '好奇心，是我的小宇宙。', alt: 'DeepSeek 蓝白鲸鱼主题原创拟人角色', accent: '#558ddd', rgb: '85,141,221', greeting: '嗨，我是小鲸。今天也一起潜进知识的海里吧。', touch: ['啵！收到你的招呼啦。小鲸带着好心情，继续陪你逛。', '发现一小片灵感海域！别着急，我们再往下探一点。'], inspiration: ['今天不妨试一个“为什么”：找件习以为常的事，追问三次，说不定就有新发现。', '遇到卡住的问题，换个方向画出来。把复杂关系变成一张小图，也是一种潜水术。'] }
+    gpt: { name: 'GPT · 小缇', tag: '把复杂的事，轻轻讲明白。', alt: 'GPT 银白发小龙角社区拟人角色', accent: '#2d9f89', rgb: '45,159,137', greeting: '嗨，我是小缇。把你的好奇心带上，我们一起理清那些小问号。', touch: ['收到你的招呼啦。今天也要给好奇心留一点位置。', '小龙角感应到灵感了！先写下来，再慢慢完善。'], inspiration: ['把今天遇到的一个问题，拆成三个最小步骤。第一步小到能立刻开始就很好。', '试着用一句话解释刚学到的东西。讲得越简单，往往理解得越清楚。'] },
+    claude: { name: 'Claude · 小柯', tag: '让想法，长出温柔的形状。', alt: 'Claude 橙发书卷社区拟人角色', accent: '#c77d5c', rgb: '199,125,92', greeting: '你好呀，我是小柯。给自己一点留白，让灵感慢慢长出来。', touch: ['谢谢你的招呼。先放松一下肩膀，今天也做得很好。', '如果想法还没成形，就先写下一句不完美的话吧。'], inspiration: ['挑一件最近让你停留的小事，写下它的颜色、声音和感受。细节里经常藏着好故事。', '给正在做的东西留一处呼吸的空间。有时少一点，反而更动人。'] },
+    deepseek: { name: 'DeepSeek · 小鲸', tag: '好奇心，是我的小宇宙。', alt: 'DeepSeek 蓝白鲸鱼主题社区拟人角色', accent: '#558ddd', rgb: '85,141,221', greeting: '嗨，我是小鲸。今天也一起潜进知识的海里吧。', touch: ['啵！收到你的招呼啦。小鲸带着好心情，继续陪你逛。', '发现一小片灵感海域！别着急，我们再往下探一点。'], inspiration: ['今天不妨试一个“为什么”：找件习以为常的事，追问三次，说不定就有新发现。', '遇到卡住的问题，换个方向画出来。把复杂关系变成一张小图，也是一种潜水术。'] }
   };
-  const portrait = $('[data-uo-portrait]', root);
-  const stage = $('[data-uo-pet]', root);
+  const portrait = $('[data-uo-portrait]');
+  const stage = $('[data-uo-pet]');
   const replyNode = $('[data-uo-reply]', root);
   const recommendation = $('[data-uo-recommend]', root);
   const input = $('input', root);
@@ -79,7 +79,6 @@
   const backdrop = $('[data-uo-backdrop]');
   const mode = $('[data-uo-mode]', root);
   const tabs = $$('[data-uo-model]', root);
-  const mobile = window.matchMedia('(max-width: 900px)');
   let model = 'deepseek';
   let adapter = null;
   let controller = null;
@@ -87,7 +86,6 @@
   let bubbleTimer = 0;
   let sequence = 0;
   let open = false;
-  let inView = true;
   let dismissed = false;
   let previousFocus = null;
   const greetings = { gpt: 0, claude: 0, deepseek: 0 };
@@ -127,14 +125,13 @@
     tabs.forEach((tab) => tab.setAttribute('aria-pressed', String(tab.dataset.uoModel === value)));
     stage.setAttribute('aria-label', `和 ${character.name.split(' · ')[0]} 打招呼`);
     const image = config.characters?.[value]?.image;
-    if (image) portrait.src = image;
-    portrait.alt = character.alt;
+    if (image) portrait.style.backgroundImage = `url(${JSON.stringify(image)})`;
+    stage.setAttribute('aria-label', `${character.alt}，拖动或点击聊天`);
     recommendation.hidden = true;
     root.classList.remove('uo-character-enter');
     void root.offsetWidth;
     root.classList.add('uo-character-enter');
     paintReply(character.greeting);
-    storage.set('uo-theme:companion', value);
     document.dispatchEvent(new CustomEvent('uo-theme:companion:model', { detail: { model } }));
   }
   function localReply(message) {
@@ -190,13 +187,14 @@
     }
   }
   function launcherState() {
-    launcher?.classList.toggle('uo-launcher-visible', !open && (mobile.matches || !inView || dismissed));
+    launcher?.classList.toggle('uo-launcher-visible', dismissed);
+    document.dispatchEvent(new CustomEvent('uo-theme:companion:visibility', { detail: { open, dismissed } }));
     launcher?.setAttribute('aria-expanded', String(open));
   }
   function openCompanion() {
     if (open) return;
     previousFocus = document.activeElement;
-    dismissed = false; open = true;
+    dismissed = false; open = true; root.hidden = false;
     root.classList.add('uo-is-open'); root.classList.remove('uo-is-dismissed');
     root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true');
     document.body.classList.add('uo-companion-modal-open');
@@ -206,12 +204,13 @@
   }
   function closeCompanion() {
     if (open) {
-      open = false;
+      open = false; root.hidden = true;
       root.classList.remove('uo-is-open'); root.removeAttribute('role'); root.removeAttribute('aria-modal');
       document.body.classList.remove('uo-companion-modal-open');
       if (backdrop) backdrop.hidden = true;
       launcherState();
-      previousFocus?.focus();
+      if (previousFocus?.getClientRects().length) previousFocus.focus();
+      else stage.focus();
     } else {
       dismissed = true;
       root.classList.add('uo-is-dismissed');
@@ -223,8 +222,8 @@
   backdrop?.addEventListener('click', closeCompanion);
   tabs.forEach((tab) => tab.addEventListener('click', () => setModel(tab.dataset.uoModel)));
   stage.addEventListener('click', () => {
-    stage.classList.remove('uo-petted'); void stage.offsetWidth; stage.classList.add('uo-petted');
-    send('打个招呼');
+    if (stage.dataset.dragged === 'true') return;
+    openCompanion(); send('打个招呼');
   });
   $$('[data-uo-prompt]', root).forEach((button) => button.addEventListener('click', () => send(button.dataset.uoPrompt)));
   form.addEventListener('submit', (event) => { event.preventDefault(); const message = input.value; input.value = ''; send(message); });
@@ -240,10 +239,6 @@
       else if (!event.shiftKey && (document.activeElement === last || !root.contains(document.activeElement))) { event.preventDefault(); first?.focus(); }
     }
   });
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver((entries) => { inView = entries[0].isIntersecting; launcherState(); }, { threshold: 0.1 }).observe(root.parentElement);
-  }
-  mobile.addEventListener('change', launcherState);
   window.UOTheme = window.UOTheme || {};
   window.UOTheme.companion = Object.freeze({
     setAdapter(handler) {
@@ -258,8 +253,17 @@
     getModel: () => model,
     getMode: () => adapter ? 'adapter' : 'static'
   });
-  const preferredModel = storage.get('uo-theme:companion');
+  const preferredModel = config.options?.model;
   setModel(Object.prototype.hasOwnProperty.call(characters, preferredModel) ? preferredModel : 'deepseek');
   launcherState();
   document.dispatchEvent(new CustomEvent('uo-theme:companion:ready', { detail: { api: window.UOTheme.companion } }));
+})();
+
+// The compact admin rail starts collapsed on narrow screens and remains keyboard operable.
+(() => {
+  const details = document.querySelector('.uo-admin-rail details');
+  if (!details) return;
+  const compact = matchMedia('(max-width: 1279px)');
+  const update = () => { details.open = !compact.matches; };
+  update(); compact.addEventListener('change', update);
 })();

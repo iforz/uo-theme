@@ -18,7 +18,9 @@ foreach ( $paths as $relative ) {
 	if ( is_file( "$root/$relative" ) ) { $files[] = $relative; continue; }
 	$iterator = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( "$root/$relative", FilesystemIterator::SKIP_DOTS ) );
 	foreach ( $iterator as $file ) {
-		// Keep original generated PNGs in Git; ship the optimized alpha WebP when available.
+		// Old generated portraits are retained in Git, superseded by community animation packs.
+		if ( preg_match( '~/assets/mascots/(gpt|claude|deepseek)\.(png|webp)$~', $file->getPathname() ) ) { continue; }
+		// Ship optimized alpha WebP when available.
 		if ( 'png' === strtolower( $file->getExtension() ) && false !== strpos( $file->getPathname(), '/assets/mascots/' ) && is_file( substr( $file->getPathname(), 0, -4 ) . '.webp' ) ) { continue; }
 		if ( $file->isFile() && '.DS_Store' !== $file->getFilename() ) { $files[] = substr( $file->getPathname(), strlen( $root ) + 1 ); }
 	}

@@ -5,6 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once __DIR__ . '/inc/updates.php';
+require_once __DIR__ . '/inc/settings.php';
 
 function uo_theme_setup() {
 	load_theme_textdomain( 'uo-theme', get_template_directory() . '/languages' );
@@ -19,10 +20,10 @@ function uo_theme_enqueue_styles() {
 	$version = wp_get_theme()->get( 'Version' );
 	wp_enqueue_style( 'uo-theme', get_theme_file_uri( 'assets/css/theme.css' ), array(), $version );
 	wp_enqueue_script( 'uo-theme-ui', get_theme_file_uri( 'assets/js/theme.js' ), array(), $version, true );
+	wp_enqueue_script( 'uo-theme-roaming', get_theme_file_uri( 'assets/js/roaming.js' ), array( 'uo-theme-ui' ), $version, true );
 	$characters = array();
 	foreach ( array( 'gpt', 'claude', 'deepseek' ) as $id ) {
-		$extension = file_exists( get_theme_file_path( "assets/mascots/$id.webp" ) ) ? 'webp' : 'png';
-		$characters[ $id ] = array( 'image' => get_theme_file_uri( "assets/mascots/$id.$extension" ) );
+		$characters[ $id ] = array( 'image' => get_theme_file_uri( "assets/mascots/community/$id.webp" ) );
 	}
 	$recent = array();
 	foreach ( get_posts( array( 'numberposts' => 5, 'post_status' => 'publish' ) ) as $post ) {
@@ -30,6 +31,7 @@ function uo_theme_enqueue_styles() {
 	}
 	$config = apply_filters( 'uo_theme_companion_settings', array(
 		'characters' => $characters,
+		'options' => uo_theme_options(),
 		'recentPosts' => $recent,
 		'context' => array( 'title' => wp_get_document_title(), 'url' => home_url( add_query_arg( array(), $GLOBALS['wp']->request ?? '' ) ), 'site' => get_bloginfo( 'name' ) ),
 	) );
