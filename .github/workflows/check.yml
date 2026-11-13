@@ -10,7 +10,10 @@ jobs:
       - name: Validate theme source
         run: php scripts/check.php
       - name: Verify update security and failure paths
-        run: php tests/updates.php
+        run: |
+          php tests/updates.php
+          php tests/settings.php
+          php tests/reading.php
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

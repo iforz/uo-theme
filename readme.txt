@@ -2,17 +2,19 @@
 Contributors: iforz
 Requires at least: 6.6
 Requires PHP: 7.4
-Stable tag: 0.4.0
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
-A dependency-free block theme with editable navigation, blog templates, accessible focus styles, and light/dark style variations. Uses system fonts. Community mascot artwork is separately licensed for attributed noncommercial use; see assets/mascots/community/NOTICE.md.
+A dependency-free block theme with editable navigation, blog templates, accessible focus styles, and light/dark style variations. Uses system fonts. Community mascot artwork is separately licensed for attributed noncommercial use; see assets/mascots/community/NOTICE.md. Decorative cover photos are separately under the Unsplash License; see assets/images/NOTICE.md.
 
 == Installation ==
 Upload the ZIP under Appearance > Themes > Add New. Activate, then customize under Appearance > Editor. Set the reading mode under Settings > Reading.
 
 == Changelog ==
+= 0.5.0 =
+Consolidate legal notices and credits in the footer, add article copy/share controls, style native comments and image previews, and provide local fallback cover photos with provenance.
 = 0.4.0 =
 Fix clicks outside the theme toggle changing the palette. Add in-page native admin dialogs, aligned desktop reading rails, an optional pointer halo, progressive HTML navigation with history and View Transitions, and content refresh.
 = 0.3.2 =

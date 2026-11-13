@@ -36,6 +36,7 @@ add_action( 'admin_enqueue_scripts', 'uo_theme_settings_assets' );
 function uo_theme_settings_page() {
 	if ( ! current_user_can( 'manage_options' ) ) { return; }
 	$options = uo_theme_options();
+	$footer = uo_theme_footer_options();
 	$models = array( 'gpt' => array( 'GPT · 白发龙娘', '银白长发，龙角与浅紫裙装' ), 'claude' => array( 'Claude · 书卷少女', '橙色长发，温暖的书卷气' ), 'deepseek' => array( 'DeepSeek · 蓝鲸女仆', '蓝色长发，鲸尾与女仆裙装' ) );
 	?>
 	<div class="wrap uo-settings"><div class="uo-settings-intro"><span class="uo-settings-eyebrow">UO THEME / STUDIO</span><h1>给博客一点生命力。</h1><p>选一位陪伴角色，让阅读保持安静，也带一点趣味。</p><a href="<?php echo esc_url( home_url( '/' ) ); ?>">查看博客 ↗</a></div>
@@ -52,6 +53,7 @@ function uo_theme_settings_page() {
 	<label><input type="checkbox" name="uo_theme_options[roaming]" value="1" <?php checked( $options['roaming'], 1 ); ?>> 允许自由行走（访客仍可暂停）</label>
 	<label>角色宽度 <input type="number" min="104" max="224" step="1" name="uo_theme_options[size]" value="<?php echo esc_attr( $options['size'] ); ?>"> px</label>
 	<p>可拖动到页面任意位置，点击角色打开对话。尊重系统「减少动态效果」设置；本轮对话为本地静态回复。</p></div></section>
+	<section class="uo-settings-section"><h2>页脚信息</h2><p>版权、备案与素材署名统一展示在页面底部。首次自动读取原站备案。</p><div class="uo-settings-controls"><label>版权文字 <input type="text" maxlength="180" name="uo_theme_footer[copyright]" value="<?php echo esc_attr( $footer['copyright'] ); ?>"></label><label>ICP备案号 <input type="text" maxlength="80" name="uo_theme_footer[icp]" value="<?php echo esc_attr( $footer['icp'] ); ?>"></label></div></section>
 	<section class="uo-settings-section uo-settings-credit"><h2>形象来源</h2><p>社区动画包：<a href="https://github.com/savanna0425/llm-pet">savanna0425 / llm-pet</a>；形象创作：<a href="https://space.bilibili.com/4168597">ZipZipPipe</a>；DeepSeek 原设：上善。非官方同人，与模型公司无关联。</p><p>美术素材仅限署名、非商业使用；DeepSeek 另遵循 CC BY-NC-SA 4.0。素材许可独立于主题代码。<a href="https://github.com/savanna0425/llm-pet/blob/fdd821feb49b294ea8abe42c9cf41e6c52e3aacf/NOTICE.md">阅读素材使用条件 ↗</a></p></section>
 	<?php submit_button( '保存设置' ); ?></form></div>
 	<?php

@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once __DIR__ . '/inc/updates.php';
 require_once __DIR__ . '/inc/settings.php';
+require_once __DIR__ . '/inc/reading.php';
 
 function uo_theme_setup() {
 	load_theme_textdomain( 'uo-theme', get_template_directory() . '/languages' );
@@ -50,6 +51,7 @@ function uo_theme_enqueue_styles() {
 	$config = apply_filters( 'uo_theme_companion_settings', array(
 		'version' => $version,
 		'characters' => $characters,
+		'covers' => array_map( function ( $name ) use ( $version ) { return add_query_arg( 'ver', $version, get_theme_file_uri( 'assets/images/' . $name . '.webp' ) ); }, array( 'circuit', 'earth', 'workspace', 'collaboration', 'writing', 'analytics' ) ),
 		'scripts' => array( 'companion' => add_query_arg( 'ver', $version, get_theme_file_uri( 'assets/js/companion.js' ) ), 'roaming' => add_query_arg( 'ver', $version, get_theme_file_uri( 'assets/js/roaming.js' ) ) ),
 		'options' => uo_theme_options(),
 		'recentPosts' => $recent,

@@ -38,6 +38,7 @@ foreach ( $files as $file ) {
 			function get_theme_file_uri( $path ) { return 'https://example.test/wp-content/themes/uo-theme/' . $path; }
 			function get_theme_file_path( $path ) { return dirname( __DIR__ ) . '/' . $path; }
 			function wp_count_posts() { return (object) array( 'publish' => 87 ); }
+			function uo_theme_footer_options() { return array( 'copyright' => '© Example', 'icp' => '' ); }
 			function get_feed_link() { return 'https://example.test/feed/'; }
 		}
 		ob_start(); require $file; $content = ob_get_clean();

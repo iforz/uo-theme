@@ -255,3 +255,76 @@
     navigate(new URL(location.href), { pop: true, state: event.state.uo });
   });
 })();
+
+// Article tools use the displayed content and canonical permalink; no external share SDK.
+(() => {
+  async function copy(value) {
+    if (navigator.clipboard?.writeText && window.isSecureContext) { await navigator.clipboard.writeText(value); return; }
+    const input = document.createElement('textarea'); input.value = value; input.setAttribute('readonly', '');
+    input.style.cssText = 'position:fixed;left:-9999px;top:0;'; document.body.appendChild(input); input.select();
+    let ok = false; try { ok = document.execCommand('copy'); } finally { input.remove(); }
+    if (!ok) throw Error('Clipboard unavailable');
+  }
+  document.addEventListener('click', async event => {
+    const button = event.target.closest('[data-uo-copy-text],[data-uo-copy-link],[data-uo-share]');
+    const tools = button?.closest('[data-uo-article-actions]'); if (!tools || button.disabled) return;
+    const status = tools.querySelector('[data-uo-action-status]');
+    button.disabled = true;
+    try {
+      if (button.hasAttribute('data-uo-copy-text')) {
+        const content = tools.previousElementSibling;
+        if (!content?.classList.contains('uo-reading-content')) throw Error('Content missing');
+        await copy(`${tools.dataset.title}\n\n${content.innerText || content.textContent}\n\n来源：${tools.dataset.url}`);
+        status.textContent = '正文已复制，已附原文链接。';
+      } else if (button.hasAttribute('data-uo-share') && navigator.share) {
+        await navigator.share({ title: tools.dataset.title, url: tools.dataset.url }); status.textContent = '分享完成。';
+      } else { await copy(tools.dataset.url); status.textContent = button.hasAttribute('data-uo-share') ? '文章链接已复制，可以粘贴分享。' : '原文链接已复制。'; }
+    } catch (error) { status.textContent = error.name === 'AbortError' ? '已取消分享。' : '暂时无法自动复制或分享，请使用浏览器菜单。'; }
+    finally { button.disabled = false; }
+  });
+})();
+
+// Native dialog image preview, with normal image links retained when dialogs are unavailable.
+(() => {
+  const dialog = document.createElement('dialog');
+  if (typeof dialog.showModal !== 'function') return;
+  dialog.className = 'uo-image-dialog'; dialog.setAttribute('aria-label', '图片预览');
+  const close = document.createElement('button'); close.type = 'button'; close.className = 'uo-icon-button'; close.textContent = '×'; close.setAttribute('aria-label', '关闭图片预览');
+  const image = document.createElement('img'), caption = document.createElement('p');
+  dialog.append(close, image, caption); document.body.appendChild(dialog);
+  let opener;
+  const selector = '.uo-reading-content img, .uo-reading-card > .wp-block-post-featured-image img';
+  function prepare() { document.querySelectorAll(selector).forEach(img => { if (!img.closest('a')) { img.tabIndex = 0; img.setAttribute('role', 'button'); img.setAttribute('aria-haspopup', 'dialog'); } }); }
+  function open(img, event) {
+    if (!img?.matches(selector)) return;
+    const link = img.closest('a');
+    if (link && !/\.(?:png|jpe?g|webp|gif|avif)(?:[?#]|$)/i.test(link.href)) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const src = new URL(img.currentSrc || img.src, location.href); if (!/^https?:$/.test(src.protocol)) return;
+    event.preventDefault(); opener = img; image.src = src.href; image.alt = img.alt || ''; caption.textContent = img.alt || '图片预览'; dialog.showModal();
+  }
+  document.addEventListener('click', event => open(event.target.closest('img'), event));
+  document.addEventListener('keydown', event => { if ((event.key === 'Enter' || event.key === ' ') && event.target.matches(selector) && !event.target.closest('a')) open(event.target, event); });
+  close.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+  dialog.addEventListener('close', () => { image.removeAttribute('src'); opener?.focus(); });
+  prepare(); document.addEventListener('uo-theme:navigated', prepare);
+})();
+
+// Shuffle only decorative fallback covers. Authored featured images are never replaced.
+(() => {
+  const covers = (window.UOThemeConfig?.covers || []).filter(src => { try { return new URL(src, location.href).origin === location.origin; } catch (_) { return false; } });
+  if (covers.length < 2) return;
+  function randomize() {
+    let bag = [], last = '';
+    document.querySelectorAll('img[data-uo-cover]').forEach(img => {
+      if (!bag.length) {
+        bag = [...covers];
+        for (let i = bag.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [bag[i], bag[j]] = [bag[j], bag[i]]; }
+        if (bag.at(-1) === last) [bag[0], bag[bag.length - 1]] = [bag.at(-1), bag[0]];
+      }
+      const src = bag.pop(); img.src = src; last = src;
+    });
+  }
+  randomize(); document.addEventListener('uo-theme:navigated', randomize);
+})();

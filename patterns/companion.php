@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
   <div class="uo-dialogue"><p data-uo-reply aria-hidden="true">嗨，我是小鲸。今天也一起潜进知识的海里吧。</p><span class="uo-sr-only" data-uo-announce role="status" aria-live="polite" aria-atomic="true">嗨，我是小鲸。今天也一起潜进知识的海里吧。</span><a class="uo-recommended-link" data-uo-recommend target="_blank" rel="noopener noreferrer" title="在新标签页打开文章" hidden></a></div>
   <div class="uo-quick-actions" aria-label="快捷话题"><button type="button" data-uo-prompt="打个招呼">打个招呼</button><button type="button" data-uo-prompt="来点灵感">来点灵感</button><button type="button" data-uo-prompt="推荐阅读">推荐阅读</button></div>
   <form class="uo-companion-form" data-uo-form><label class="uo-sr-only" for="uo-companion-input">对灵感搭子说句话</label><input id="uo-companion-input" name="message" type="text" maxlength="500" placeholder="说句话，让灵感冒个泡…" autocomplete="off" disabled><button type="submit" aria-label="发送消息" disabled>↗</button></form>
-  <p class="uo-pet-credit"><a href="https://github.com/savanna0425/llm-pet" target="_blank" rel="noopener noreferrer">社区动画 · llm-pet ↗</a><br>形象：ZipZipPipe / DeepSeek 原设：上善<br>非商业同人 · DeepSeek BY-NC-SA 4.0</p>
   <noscript><p class="uo-companion-noscript">开启 JavaScript 后即可切换角色和体验静态对话。</p></noscript>
 </section></div>
 <!-- /wp:html -->
