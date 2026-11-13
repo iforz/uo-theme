@@ -90,3 +90,7 @@ Cookie 隔离候选预览完成真实 WordPress 后台设置保存，Claude 选�
 同源当前标签页导航读取完整SSR HTML，兼容时只替换main，更新标题/规范链接/社交元信息/区块内联样式/历史及滚动，配色与角色不重建。原文链接保留新标签。修饰键、下载、外链、后台、API、锚点均原生；响应错误、新资源、脚本/嵌入内容或登录状态变化回退完整导航。8秒超时、取消旧请求和竞态保护；支持时以View Transition增强，否则普通DOM更新。提供页顶加载线与内容刷新按钮，搜索GET同样渐进增强。真实URL始终返回完整正文，禁JS可阅读，未使用爬虫专用内容，也不承诺搜索排名提升。
 
 Node VM加固定linkedom0.18.12 worker（SHA256 196efeb17c260e001979dbc54a3c30e701a881c6e8a3eedaddc5ad83c99ee5ff）覆盖按钮回归/弹窗保留编辑器/新标签与Ctrl/动态陪伴脚本后的局部导航/URL和metadata/侧栏保留/popstate滚动/新脚本及网络异常回退/最新请求获胜。CI增同一模拟测试，不将模拟DOM计为真实浏览器。Local Computer Use MCP仍未加载，实际布局、iframe编辑保存、过渡、深浅色视觉和手机交互待用户或后续工具复验。
+
+0.4.0正式发布与安装：PHP/WP6.6区块解析、设置及更新回归、CI内的Node VM/固定DOM模拟均通过；正式41文件与源码/安装一致。原生更新true，文章87→87及角色设置保留；生产六路由、SSR完整正文、hero位于main、按钮精确选择器、访客无管理浮层、局部导航资源兼容、管理员原生表单权限隔离通过HTTP/CLI验证。首页MISS101.93ms/HIT37.62ms，gzip33,166字节。上述不代表真实浏览器绘制或编辑保存验证。
+
+工具状态更正：任务后段Local Computer Use MCP恢复，窗口列举/捕获可用；执行输入报“Target app must be frontmost; focus it manually before executing”。未切换到其他接口，已请求用户将Chrome置前台。未实际打开博客测试页，未新建浏览器服务；本轮布局、浮层内编辑和视觉流畅度尚未实测。
