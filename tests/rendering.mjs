@@ -5,7 +5,7 @@ import vm from 'node:vm';
 const root = new URL('../', import.meta.url);
 const php = readFileSync(new URL('functions.php', root), 'utf8');
 const prepaint = php.match(/\$script = <<<'JS'\n([\s\S]*?)\nJS;/)[1];
-const ui = readFileSync(new URL('assets/js/theme.js', root), 'utf8');
+const ui = readFileSync(new URL('assets/js/theme.js', root), 'utf8').split('// Native WP operations')[0];
 for (const file of ['assets/js/theme.js', 'assets/js/companion.js', 'assets/js/roaming.js']) new vm.Script(readFileSync(new URL(file, root), 'utf8'), { filename: file });
 function context({ saved = null, dark = false, blocked = false, enabled = 1 } = {}) {
   const events = {}, idle = [], scripts = [], buttonEvents = {};
@@ -13,7 +13,7 @@ function context({ saved = null, dark = false, blocked = false, enabled = 1 } = 
   const button = { setAttribute() {}, addEventListener(k, fn) { buttonEvents[k] = fn; } };
   const document = {
     documentElement: element, readyState: 'loading', currentScript: { nonce: 'test-nonce' },
-    querySelector: s => s === '[data-uo-scheme]' ? button : null, querySelectorAll: () => [],
+    querySelector: s => s === 'button[data-uo-scheme]' ? button : (s === '[data-uo-scheme]' ? element : null), querySelectorAll: () => [],
     addEventListener() {}, createElement: () => ({}), head: { appendChild: s => scripts.push(s) }
   };
   const scope = { document, URL, location: { href: 'https://blog.iforz.cn/', origin: 'https://blog.iforz.cn' },
@@ -53,7 +53,7 @@ export function runRenderingChecks() {
   c.scripts[0].onload(); assert.equal(c.scripts.length, 2); assert.ok(c.scripts[1].src.endsWith('/roaming.js'));
   result.companion_after_load_and_idle = true; result.roaming_after_companion = true;
   c.buttonEvents.click(); assert.equal(c.element.dataset.uoScheme, 'light'); assert.equal(c.document.body.dataset.uoScheme, 'light');
-  c.buttonEvents.click(); assert.equal(c.element.dataset.uoScheme, 'dark'); result.root_body_toggle_consistent = true;
+  c.buttonEvents.click(); assert.equal(c.element.dataset.uoScheme, 'dark'); result.root_body_toggle_consistent = true; assert.equal(c.element.onclick, undefined); result.only_button_selectable = true;
   const off = context({ enabled: 0 }); off.document.body = { dataset: {}, classList: { add() {}, toggle() {} } }; vm.runInContext(ui, off.scope);
   assert.equal(off.events.load, undefined); assert.equal(off.scripts.length, 0); result.disabled_no_download = true;
   const foreign = context(); foreign.document.body = { dataset: {}, classList: { add() {}, toggle() {} } };

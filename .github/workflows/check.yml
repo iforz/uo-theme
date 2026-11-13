@@ -11,3 +11,13 @@ jobs:
         run: php scripts/check.php
       - name: Verify update security and failure paths
         run: php tests/updates.php
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify rendering and partial navigation without a browser
+        shell: bash
+        run: |
+          curl --fail --location --retry 2 https://unpkg.com/linkedom@0.18.12/worker.js -o "$RUNNER_TEMP/uo-dom.mjs"
+          echo "196efeb17c260e001979dbc54a3c30e701a881c6e8a3eedaddc5ad83c99ee5ff  $RUNNER_TEMP/uo-dom.mjs" | sha256sum --check
+          node --input-type=module -e "import('./tests/rendering.mjs').then(({results}) => console.log(results))"
+          node tests/navigation.mjs "$RUNNER_TEMP/uo-dom.mjs"

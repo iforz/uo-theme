@@ -63,7 +63,39 @@ function uo_theme_admin_rail() {
 	$links = array( array( '⌂', '工作台', admin_url() ), array( '✎', '写文章', admin_url( 'post-new.php' ) ), array( '▤', '文章管理', admin_url( 'edit.php' ) ), array( '▧', '媒体库', admin_url( 'upload.php' ) ), array( '☏', '评论', admin_url( 'edit-comments.php' ) ), array( '✦', '看板娘与主题', admin_url( 'themes.php?page=uo-theme' ) ), array( '◈', '站点编辑器', admin_url( 'site-editor.php' ) ) );
 	if ( is_singular() && current_user_can( 'edit_post', get_queried_object_id() ) ) { $links[] = array( '↗', '编辑本文', get_edit_post_link() ); }
 	echo '<nav class="uo-admin-rail" aria-label="管理员快捷菜单"><details open><summary><span aria-hidden="true">◉</span> 管理空间</summary><div class="uo-admin-links">';
-	foreach ( $links as $link ) { echo '<a href="' . esc_url( $link[2] ) . '"><span aria-hidden="true">' . esc_html( $link[0] ) . '</span>' . esc_html( $link[1] ) . '</a>'; }
+	foreach ( $links as $link ) { echo '<a data-uo-admin href="' . esc_url( $link[2] ) . '"><span aria-hidden="true">' . esc_html( $link[0] ) . '</span>' . esc_html( $link[1] ) . '</a>'; }
 	echo '</div></details></nav>';
+	?>
+	<dialog class="uo-admin-dialog" id="uo-admin-dialog" aria-labelledby="uo-admin-title">
+		<div class="uo-admin-dialog-header"><h2 id="uo-admin-title">管理空间</h2><a data-uo-admin-full href="<?php echo esc_url( admin_url() ); ?>" target="_blank" rel="noopener">独立窗口 ↗</a><button type="button" class="uo-icon-button" data-uo-admin-close aria-label="收起管理界面">×</button></div>
+		<p class="uo-admin-dialog-note" role="status" data-uo-admin-status>请在编辑界面保存更改；收起后可继续编辑。</p>
+		<iframe class="uo-admin-frame" data-uo-admin-frame title="WordPress 管理操作" sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-downloads allow-popups"></iframe>
+	</dialog>
+	<?php
 }
 add_action( 'wp_footer', 'uo_theme_admin_rail' );
+
+/** Embedded native screens retain WordPress authentication, capabilities and nonce handling. */
+function uo_theme_embedded_admin_chrome() {
+	if ( ! current_user_can( 'manage_options' ) ) { return; }
+	?>
+	<script id="uo-admin-embed-init">
+	(() => { try {
+		if (!window.frameElement?.hasAttribute('data-uo-admin-frame') || parent.location.origin !== location.origin) return;
+		document.documentElement.classList.add('uo-admin-embedded');
+		const scheme = parent.document.documentElement.dataset.uoScheme;
+		if (scheme === 'dark') document.documentElement.classList.add('uo-admin-embedded-dark');
+	} catch (_) {} })();
+	</script>
+	<style id="uo-admin-embed-style">
+	.uo-admin-embedded { padding-top:0!important; }
+	.uo-admin-embedded #wpadminbar,.uo-admin-embedded #adminmenumain,.uo-admin-embedded #wpfooter { display:none!important; }
+	.uo-admin-embedded #wpcontent,.uo-admin-embedded #wpfooter { margin-left:0!important; }
+	.uo-admin-embedded #wpbody-content { padding-bottom:20px; }
+	.uo-admin-embedded .edit-post-layout,.uo-admin-embedded .interface-interface-skeleton { left:0!important; top:0!important; }
+	.uo-admin-embedded-dark body { background:#151f29; color:#c8d4df; }
+	.uo-admin-embedded-dark .wrap > h1,.uo-admin-embedded-dark .wrap > h2 { color:#e2ecf1; }
+	</style>
+	<?php
+}
+add_action( 'admin_head', 'uo_theme_embedded_admin_chrome', 0 );
