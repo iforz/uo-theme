@@ -1,6 +1,6 @@
 # blog.iforz.cn 接入记录
 
-当前生产版本为 **uo-theme 0.3.0**。自动更新源为本仓库的正式 GitHub Release。
+当前生产版本为 **uo-theme 0.3.1**。自动更新源为本仓库的正式 GitHub Release。
 
 ## 首次接入 0.1.2（2026-11-12）
 
