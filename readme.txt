@@ -2,7 +2,7 @@
 Contributors: iforz
 Requires at least: 6.6
 Requires PHP: 7.4
-Stable tag: 0.3.1
+Stable tag: 0.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,6 +13,8 @@ A dependency-free block theme with editable navigation, blog templates, accessib
 Upload the ZIP under Appearance > Themes > Add New. Activate, then customize under Appearance > Editor. Set the reading mode under Settings > Reading.
 
 == Changelog ==
+= 0.3.2 =
+Read saved dark mode before first paint. Deliver complete styles and basic controls with HTML, load optional companion scripts after page load, use native emoji, and version companion URLs for caching.
 = 0.3.1 =
 Hide the public WordPress toolbar while keeping the admin rail; open article entry points in a new tab. Defer optional character atlases until after page load, avoid repeated unchanged style writes, and schedule idle animation at its actual frame rate.
 = 0.3.0 =

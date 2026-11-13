@@ -4,7 +4,7 @@
 
 ## 前端适配器
 
-`assets/js/theme.js` 在页脚加载，初始化后触发 `uo-theme:companion:ready`。插件可在主题脚本之后加载自己的脚本，或监听该事件，注册：
+自0.3.2起，基础界面随HTML执行；`assets/js/companion.js` 与 `roaming.js` 在页面load后的空闲任务中依次加载，初始化后触发 `uo-theme:companion:ready`。插件必须检查API是否已就绪，或监听该事件后注册；不要假定DOMContentLoaded时陪伴API已经存在：
 
 ```js
 window.UOTheme.companion.setAdapter(async ({ model, message, context, signal }) => {
@@ -38,3 +38,13 @@ PHP 过滤器 `uo_theme_companion_settings` 可以调整前端配置中的角色
 ## 0.3.0 社区动画
 
 角色图集在 `assets/mascots/community/`；素材来源/许可见同目录 NOTICE.md 和 provenance.json。后台「外观 → uo-theme 设置」管理启用、角色、尺寸与游走；每次访问从站点配置选择模型。`select()` 仍可供插件临时选择当前页面角色。`options.enabled=0` 时不初始化陪伴 API。`roaming.js` 播放八列九行图集，有效帧数依次为 6/8/8/4/5/8/6/6/6；不读取远程代码/模型，不发送消息至 AI 服务。
+
+```js
+function connectCompanion() {
+  // 在此调用 window.UOTheme.companion.setAdapter(handler)。
+}
+if (window.UOTheme?.companion) connectCompanion();
+else document.addEventListener('uo-theme:companion:ready', connectCompanion, { once: true });
+```
+
+`uo_theme_inline_styles`、`uo_theme_inline_ui`过滤器可返回false以回退外部主题CSS或defer基础脚本；默认内联以减少首屏往返。预绘制脚本通过WordPress原生inline-script属性过滤器兼容nonce。首屏只读取明暗偏好并设置html配色，页尾控制器同步html/body；社区角色及模型密钥规则不变。

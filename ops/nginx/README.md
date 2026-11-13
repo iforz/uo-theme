@@ -1,0 +1,7 @@
+# blog.iforz.cn HTML delivery
+
+These two snippets are site-specific deployment sources, not theme runtime files and not included in the theme ZIP. Include `blog-cache-http.conf` once at http scope, and `blog-cache-location.conf` inside only this blog's HTTPS server before `enable-php-85.conf`. Keep all existing admin/IP, XML-RPC and private-upload restrictions intact. The dedicated cache directory must be writable by the existing www worker. Back up the vhost, run `nginx -t`, and use a graceful reload; restore the vhost if validation fails. Never edit the shared PHP include or sibling vhosts.
+
+Only anonymous GET/HEAD for `/` and the site's date-based `/index.php/YYYY/MM/DD/slug/` permalinks are eligible. Any Cookie, Authorization, query string, unlisted path or other method bypasses. Only 200 responses cache for 30 seconds; native upstream Cache-Control, Vary and Set-Cookie handling remains enabled. POST is not cacheable and may have no X-UO-HTML-Cache header. Browser HTML uses `Cache-Control: no-cache`; the server's short cache is independent. Editors see their uncached logged-in pages immediately; anonymous publication/deletion visibility can lag at most 30 seconds. There is no stale-on-error mode.
+
+`X-UO-HTML-Cache` exposes MISS/HIT/BYPASS/EXPIRED for verification. Theme static assets cache seven days, with versioned script/image URLs to invalidate changed assets. Clear only this blog's dedicated cache after deployment or rollback. This cannot eliminate DNS/TCP/TLS or proxy delays on visitors' connections.

@@ -66,3 +66,15 @@ Cookie 隔离候选预览完成真实 WordPress 后台设置保存，Claude 选�
 同一Chrome headless、同一SSH网络出口、1440px、禁用缓存、GPT角色的单轮A/B：首页TTFB152/153ms，DOMContentLoaded281/246ms，window.load7628/362ms；图集改为load之后379ms开始，仍约6.6秒后才完整出现。上述load指标不是角色出现时间，也不代表所有用户网络下的速度承诺。待机3秒属性变更196→16、样式重算181→16，主线程TaskDuration92→24ms。原始证据performance-ab.json保存在公司UOT-005证据目录。
 
 实际浏览器验证通过：点击文章确实新增标签页且首页保留；分类当前页；角色拖拽不误开聊天、暂停后零属性变更、恢复、静态推荐新标签页、手机390px边界/聊天、减少动态下停止；无JS异常。CLI加载真实候选主题、设置管理员上下文，确认前台顶栏false且左栏true，用户现有GPT/156px/游走设置未修改。PHP/JSON/WP6.6区块解析、更新器/设置回归通过。系统Node因既有simdjson动态库缺失不能启动；未改全局依赖，实际浏览器已执行新脚本并覆盖交互。最终用户体感及最低PHP7.4实机尚待验证。
+
+## 0.3.2 HTML优先与深色首屏（2026-11-13）
+
+用户进一步明确：浏览器转圈，深色页面先浅后深。旧主题在页尾读取明暗偏好，确有首次绘制后切色的条件。现在wp_head优先级0的内联引导在body出现前读取相同存储键，并设置html配色；CSS的深色变量直接作用于html；页尾控件同步html/body。已保存的浅色选择优先于系统深色，存储不可用时回退系统偏好。
+
+完整主题CSS随HTML返回，5KB基础控件内联于页尾，首屏没有主题CSS/JS的额外请求。静态聊天拆到companion.js，页面load之后空闲加载，再加载roaming.js及图集，继续保留社区资源/静态API。移除前台可选emoji兼容下载，使用浏览器原生emoji。原生WordPress导航模块及首屏Logo仍正常加载，不能将此写成所有浏览器子资源均零等待。CSP等需要外部资源时可用两个过滤器回退；外部基础脚本使用原生defer策略。
+
+站点专属匿名HTML缓存及边界见ops/nginx/README.md。实际Nginx配置测试通过并只改本博客vhost，未修改共享PHP include或其他站点。初轮同路径请求MISS约163ms、HIT约43ms；查询、任意Cookie、伪登录Cookie、Authorization均BYPASS，POST不缓存，后台依原IP规则404；文章HEAD复用GET，超过31秒后EXPIRED。临时仅签名探针触发的Set-Cookie响应连续两次MISS，普通响应随后MISS→HIT，探针MU立即删除。原始HTTP证据在公司UOT-006目录。
+
+真实WP候选HTTP确认：预绘制脚本早于主题样式和body、完整样式及基础控件在HTML、没有首屏外部主题资源/图集、保留文章正文和新标签页入口、没有访客管理栏。外部CSS/defer控件回退通过。Node VM纯逻辑测试tests/rendering.mjs覆盖已存深色、已存浅色覆盖系统、系统深色、拒绝存储、无效偏好、load/空闲/依赖顺序、切换同步、禁用不下载、同源脚本约束；并编译全部三段JS。PHP/JSON/WP6.6区块解析、设置及更新回归通过。
+
+本机默认代理域名解析到198.18网段，多轮TLS握手约3.9–6.7秒，甚至超时；这属于本机网络路径，不能外推为用户网络，也不能用缓存消除。源站无明显CPU/IO压力，原HTML gzip约18.7KB；必须区分首字节、正文绘制、load与角色出现时间。按用户新规则读取Local Computer Use技能，但其本地MCP未加载；没有改用CDP/Playwright/其他浏览器。当前HTTP/VM证据不能代替真实浏览器FCP/LCP、深色闪烁视觉和移动交互复测，最低PHP7.4实机亦未验证。
