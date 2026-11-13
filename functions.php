@@ -51,7 +51,7 @@ function uo_theme_enqueue_styles() {
 	$config = apply_filters( 'uo_theme_companion_settings', array(
 		'version' => $version,
 		'characters' => $characters,
-		'covers' => array_map( function ( $name ) use ( $version ) { return add_query_arg( 'ver', $version, get_theme_file_uri( 'assets/images/' . $name . '.webp' ) ); }, array( 'circuit', 'earth', 'workspace', 'collaboration', 'writing', 'analytics' ) ),
+		'covers' => array_map( function ( $name ) use ( $version ) { return add_query_arg( 'ver', $version, get_theme_file_uri( 'assets/images/' . $name . '.webp' ) ); }, array( 'circuit', 'earth', 'workspace', 'collaboration', 'writing', 'analytics', 'cartoon-reading', 'cartoon-coding', 'cartoon-sky' ) ),
 		'scripts' => array( 'companion' => add_query_arg( 'ver', $version, get_theme_file_uri( 'assets/js/companion.js' ) ), 'roaming' => add_query_arg( 'ver', $version, get_theme_file_uri( 'assets/js/roaming.js' ) ) ),
 		'options' => uo_theme_options(),
 		'recentPosts' => $recent,

@@ -9,3 +9,7 @@ Downloaded 2026-11-13 as resized/cropped WebP via the source CDN. Original photo
 These photos remain under the Unsplash License, separate from the GPL theme code: https://unsplash.com/license
 
 The license grants download, copying, modification, distribution and use, including commercial use. It excludes sale without significant modification and compiling images to replicate a similar or competing service. Attribution is appreciated and retained in the site footer. No affiliation or endorsement is implied.
+
+## AI-generated cartoon illustrations
+
+cartoon-reading.webp, cartoon-coding.webp and cartoon-sky.webp were generated for uo-theme on 2026-11-13 with the built-in OpenAI image_gen tool. They are decorative fictional illustrations, not community mascot artwork or article evidence. Sources, SHA-256, prompt subjects/style and dimensions are in provenance.json. Full PNG originals and prompt-set.json are archived under app_packages/uo-theme/assets/cartoon-covers/20261113/.

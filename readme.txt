@@ -2,7 +2,7 @@
 Contributors: iforz
 Requires at least: 6.6
 Requires PHP: 7.4
-Stable tag: 0.5.0
+Stable tag: 0.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,6 +13,9 @@ A dependency-free block theme with editable navigation, blog templates, accessib
 Upload the ZIP under Appearance > Themes > Add New. Activate, then customize under Appearance > Editor. Set the reading mode under Settings > Reading.
 
 == Changelog ==
+= 0.5.1 =
+* Add three original AI-generated cartoon illustrations to the rotating cover pool; preserve authored featured images.
+
 = 0.5.0 =
 Consolidate legal notices and credits in the footer, add article copy/share controls, style native comments and image previews, and provide local fallback cover photos with provenance.
 = 0.4.0 =

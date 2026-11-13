@@ -78,5 +78,53 @@
       960,
       640
     ]
+  },
+  {
+    "file": "cartoon-reading.webp",
+    "origin": "AI-generated illustration",
+    "generator": "OpenAI image_gen built-in tool",
+    "generated_on": "2026-11-13",
+    "source_file": "cartoon-reading.png",
+    "source_sha256": "b6909413fd343d745250aec8471f58d96f8f7aeee3f5375e72306bc126b85cc8",
+    "prompt_subject": "A friendly rounded robot reading in a quiet cozy reading nook beside a plant, soft window light.",
+    "prompt_style": "Landscape 3:2, original polished 2D editorial cartoon, dark teal outlines, rounded shapes, subtle paper grain; mint teal, cream and restrained coral; quiet uncluttered composition readable at thumbnail size; no brands, typography, watermarks, frames or collage.",
+    "sha256": "133a3e35406738bd08d1587222df3068345f87e500162fb20d7dc68f45daf97d",
+    "bytes": 55732,
+    "dimensions": [
+      960,
+      640
+    ]
+  },
+  {
+    "file": "cartoon-coding.webp",
+    "origin": "AI-generated illustration",
+    "generator": "OpenAI image_gen built-in tool",
+    "generated_on": "2026-11-13",
+    "source_file": "cartoon-coding.png",
+    "source_sha256": "d7e99a240f501481dbae117320519cd1f0a6396abe28b90f5465857fac5aef73",
+    "prompt_subject": "A fluffy cream cat concentrating at a laptop on a tidy desk, plant and warm desk lamp, night sky outside.",
+    "prompt_style": "Landscape 3:2, original polished 2D editorial cartoon, dark teal outlines, rounded shapes, subtle paper grain; mint teal, cream and restrained coral; quiet uncluttered composition readable at thumbnail size; no brands, typography, watermarks, frames or collage.",
+    "sha256": "47e62560b653eb0421ad607c1480276b20c1c3b2e6f6ed88053ecf1a2bc8a5c3",
+    "bytes": 64180,
+    "dimensions": [
+      960,
+      640
+    ]
+  },
+  {
+    "file": "cartoon-sky.webp",
+    "origin": "AI-generated illustration",
+    "generator": "OpenAI image_gen built-in tool",
+    "generated_on": "2026-11-13",
+    "source_file": "cartoon-sky.png",
+    "source_sha256": "ad53955dfa3e7cbfe0a644e8be5fd100ff2ffe959011819822db5054afa8aee2",
+    "prompt_subject": "A friendly blue whale floating through cream clouds above rounded teal hills and a coral sun.",
+    "prompt_style": "Landscape 3:2, original polished 2D editorial cartoon, dark teal outlines, rounded shapes, subtle paper grain; mint teal, cream and restrained coral; quiet uncluttered composition readable at thumbnail size; no brands, typography, watermarks, frames or collage.",
+    "sha256": "0c2e5460707de1855256c1fbadd751a563c6ae092dd49902f0f459f28f511603",
+    "bytes": 31998,
+    "dimensions": [
+      960,
+      640
+    ]
   }
 ]

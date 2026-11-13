@@ -41,7 +41,7 @@ function uo_theme_cover_fallback( $html, $block, $instance = null ) {
 	if ( is_admin() || is_feed() || '' !== trim( $html ) ) { return $html; }
 	$post_id = absint( $instance->context['postId'] ?? get_the_ID() );
 	if ( ! $post_id || 'post' !== get_post_type( $post_id ) || post_password_required( $post_id ) ) { return $html; }
-	$names = array( 'circuit', 'earth', 'workspace', 'collaboration', 'writing', 'analytics' );
+	$names = array( 'circuit', 'earth', 'workspace', 'collaboration', 'writing', 'analytics', 'cartoon-reading', 'cartoon-coding', 'cartoon-sky' );
 	$name = $names[ $post_id % count( $names ) ];
 	$src = add_query_arg( 'ver', wp_get_theme()->get( 'Version' ), get_theme_file_uri( 'assets/images/' . $name . '.webp' ) );
 	$image = '<img data-uo-cover class="uo-fallback-cover" src="' . esc_url( $src ) . '" width="960" height="640" alt="" loading="lazy" decoding="async">';
