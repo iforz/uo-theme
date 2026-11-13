@@ -37,6 +37,24 @@
       "upstream": "pets/deepseek-standard/spritesheet.webp",
       "bytes": 1587598,
       "sha256": "aa717daf0013428b3af34ef3b98449e0243979e30ae4d479300d19d699f832b5"
+    },
+    {
+      "id": "gpt-idle",
+      "upstream": "previews/chatgpt-standard.gif",
+      "bytes": 92212,
+      "sha256": "1216f8f8ed21b7e770bfaaff9b3d2becff26cc3d94dcd1b90f1a85eecaeb094f"
+    },
+    {
+      "id": "claude-idle",
+      "upstream": "previews/claude-standard.gif",
+      "bytes": 96058,
+      "sha256": "9cf504fb53ab8424bcc80cb6d674f468758e3b90b39b1283be394ce26f666688"
+    },
+    {
+      "id": "deepseek-idle",
+      "upstream": "previews/deepseek-standard.gif",
+      "bytes": 77166,
+      "sha256": "0d53c90debeb9fd23170db943be700fb4f1db70018bcdd6567e6d70234cca50c"
     }
   ]
 }

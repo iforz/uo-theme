@@ -9,6 +9,8 @@
 .uo-settings-model { position:relative; display:flex; flex-direction:column; align-items:center; padding:18px 10px; gap:10px; border:1px solid #dfe8eb; border-radius:15px; cursor:pointer; background:#f9fbfc; transition:border-color .2s,background .2s; }
 .uo-settings-model:has(input:checked) { border-color:#4eaa90; box-shadow:0 0 0 2px #4eaa9022; background:#f0f9f5; }
 .uo-settings-model input { position:absolute; left:13px; top:13px; }.uo-settings-model > span:last-child { color:#627985; font-size:12px; text-align:center; }
-.uo-settings-pet { display:block; width:144px; height:156px; background-size:800% 900%; background-position:0 0; background-repeat:no-repeat; }
+.uo-settings-pet { display:block; width:144px; height:156px; background-image:var(--uo-preview); background-size:contain; background-position:0 0; background-repeat:no-repeat; }
 .uo-settings-controls { display:grid; gap:18px; margin-top:20px; }.uo-settings-controls input[type=number] { width:90px; margin-left:12px; }.uo-settings-credit { background:#f8fafb; }
 @media(max-width:782px) { .uo-settings { margin:20px 10px; }.uo-settings-intro,.uo-settings-section { padding:22px; }.uo-settings-models { grid-template-columns:1fr; }.uo-settings h1 { font-size:24px; } }
+
+@media(prefers-reduced-motion:reduce) { .uo-settings-pet { background-image:var(--uo-sheet); background-size:800% 900%; } }

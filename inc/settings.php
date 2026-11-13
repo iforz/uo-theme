@@ -44,7 +44,7 @@ function uo_theme_settings_page() {
 	<section class="uo-settings-section"><h2>选择陪伴角色</h2><p>社区标准版 · 九组动态动作 · 保存后对所有访客生效</p><div class="uo-settings-models">
 	<?php foreach ( $models as $id => $info ) : ?>
 	<label class="uo-settings-model"><input type="radio" name="uo_theme_options[model]" value="<?php echo esc_attr( $id ); ?>" <?php checked( $options['model'], $id ); ?>>
-	<span class="uo-settings-pet" style="background-image:url('<?php echo esc_url( get_theme_file_uri( 'assets/mascots/community/' . $id . '.webp' ) ); ?>')" aria-hidden="true"></span>
+	<span class="uo-settings-pet" style="--uo-sheet:url('<?php echo esc_url( get_theme_file_uri( 'assets/mascots/community/' . $id . '.webp' ) ); ?>');--uo-preview:url('<?php echo esc_url( get_theme_file_uri( 'assets/mascots/community/' . $id . '-idle.gif' ) ); ?>')" aria-hidden="true"></span>
 	<strong><?php echo esc_html( $info[0] ); ?></strong><span><?php echo esc_html( $info[1] ); ?></span></label>
 	<?php endforeach; ?></div></section>
 	<section class="uo-settings-section"><h2>活动方式</h2><div class="uo-settings-controls">
