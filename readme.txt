@@ -2,17 +2,20 @@
 Contributors: iforz
 Requires at least: 6.6
 Requires PHP: 7.4
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
-A dependency-free block theme with editable navigation, blog templates, accessible focus styles, and light/dark style variations. Uses system fonts. No bundled external assets.
+A dependency-free block theme with editable navigation, blog templates, accessible focus styles, and light/dark style variations. Uses system fonts. Community mascot artwork is separately licensed for attributed noncommercial use; see assets/mascots/community/NOTICE.md.
 
 == Installation ==
 Upload the ZIP under Appearance > Themes > Add New. Activate, then customize under Appearance > Editor. Set the reading mode under Settings > Reading.
 
 == Changelog ==
+= 0.3.0 =
+Narrow reading canvas, administrator-only left menu, native theme settings and movable community GPT/Claude/DeepSeek sprite companions.
+
 = 0.2.0 =
 Two-column journal design, original GPT/Claude/DeepSeek companions, static conversation, adapter extension point, dark mode, reading progress, and reduced-motion support.
 = 0.1.2 =
@@ -25,3 +28,5 @@ Initial starter template. Full browser/editor compatibility acceptance remains p
 
 == Copyright ==
 Copyright 2026 uo. All theme code is GPLv2 or later.
+
+Community animation packs: savanna0425/llm-pet at fdd821feb49b294ea8abe42c9cf41e6c52e3aacf. Character art: ZipZipPipe; DeepSeek original design: Shangshan (上善). Unofficial fan art. Attribution and noncommercial use required; DeepSeek additionally CC BY-NC-SA 4.0. These artwork terms do not replace the code license.

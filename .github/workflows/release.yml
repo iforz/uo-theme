@@ -18,6 +18,7 @@ jobs:
         run: |
           php scripts/check.php
           php tests/updates.php
+          php tests/settings.php
           php scripts/package.php
       - name: Publish stable installable assets
         env:

@@ -16,8 +16,8 @@ WordPress 双栏博客主题，版本 **0.2.0**。支持 WordPress 6.6+、PHP 7.
 - 最新文章首页、文章详情（评论/分类/标签/上一篇和下一篇）、普通页面、归档、搜索、404、空白页面模板。
 - 可编辑页眉/页脚、Logo、导航、文章缩略图、分页、空结果提示。
 - `theme.json` 配色、字体、间距与宽度；默认浅色和 Forest night 深色样式。
-- 左侧文章流、右侧角色/简介/分类/近文，手机单栏；明暗切换、阅读进度、回顶、搜索浮层与卡片动效。
-- GPT、Claude、DeepSeek 三位原创拟人看板娘，支持切换、轻触、静态对话、站内推荐与手机弹窗。默认不调用 AI；扩展方式见 [COMPANION-API.md](docs/COMPANION-API.md)。
+- 左侧文章流、右侧简介/分类/近文，手机单栏；明暗切换、阅读进度、回顶、搜索浮层与卡片动效。
+- GPT、Claude、DeepSeek 社区动态看板娘，支持自由行走、鼠标/触屏拖拽、暂停、收起、静态对话与站内推荐。在「外观 → uo-theme 设置」选择形象、尺寸和活动方式；桌面主体1080px，左侧为管理员保留竖向快捷菜单。默认不调用 AI；扩展方式见 [COMPANION-API.md](docs/COMPANION-API.md)。
 - 键盘焦点与减少动态支持；系统字体，无外部 CDN、追踪器或运行依赖。
 - 展示文案以中文为主，PHP 翻译函数使用 `uo-theme` 文本域。
 
@@ -27,7 +27,7 @@ WordPress 双栏博客主题，版本 **0.2.0**。支持 WordPress 6.6+、PHP 7.
 assets/css/     前端和编辑器共用 CSS
 parts/          页眉与页脚
 assets/js/      原生交互与陪伴适配器
-assets/mascots/ 原创源图 PNG / 运行图 WebP
+assets/mascots/community/ 社区动画图集、固定来源与独立素材许可
 patterns/       可翻译的欢迎、搜索与提示区块
 styles/         全局样式变体
 templates/      WordPress 模板层级
@@ -42,6 +42,7 @@ scripts/       检查与封包（不进入安装包）
 
 ```sh
 php scripts/check.php
+php tests/settings.php
 php scripts/check.php /path/to/wordpress
 php scripts/package.php
 ```
@@ -64,3 +65,9 @@ php scripts/package.php
 发布步骤：同步提高 `style.css` 的 Version 和 `readme.txt` 的 Stable tag，运行检查与 `php tests/updates.php`，提交后推送匹配的版本标签（例如 `v0.2.0`）。Release 工作流自动验证标签、打包并发布安装 ZIP、更新清单和校验文件。只有正式标签发布触发站点更新，普通开发提交不会触发。不要编辑已发布标签或替换其资产；修复应发布新版本。
 
 WordPress 按自身定时任务检查与安装，更新存在间隔，不保证实时。当前更新回调随启用的主题加载；切换到无关主题后，不承诺后台继续更新 uo-theme。站点级定制请用子主题或站点编辑器，直接修改主题文件会被新版覆盖。
+
+## 社区素材许可
+
+当前动画来自 [savanna0425/llm-pet](https://github.com/savanna0425/llm-pet) 固定 commit `fdd821feb49b294ea8abe42c9cf41e6c52e3aacf`，原始文件未修改，哈希见 `assets/mascots/community/provenance.json`。形象作者 **ZipZipPipe**，DeepSeek 原设 **上善**。这些是非官方同人，要求署名、非商业使用；DeepSeek 另遵循 **CC BY-NC-SA 4.0**。请阅读包内 `assets/mascots/community/NOTICE.md`。美术不受主题代码的 GPL 许可覆盖，商业站点应停用/移除这些素材并换为有相应授权的角色。旧生成立绘保留于 Git 历史/源码，安装包不包含它们。
+
+前端不从第三方域名加载角色，动画播放器为本主题的无依赖九行动作图集适配代码。减少动态时停止动画和游走；后台角色选择为站点默认值，不受旧浏览器角色偏好覆盖。

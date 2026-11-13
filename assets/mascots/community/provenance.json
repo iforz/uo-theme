@@ -1,0 +1,42 @@
+{
+  "repository": "https://github.com/savanna0425/llm-pet",
+  "commit": "fdd821feb49b294ea8abe42c9cf41e6c52e3aacf",
+  "modified": false,
+  "grid": {
+    "columns": 8,
+    "rows": 9,
+    "cellWidth": 192,
+    "cellHeight": 208,
+    "frameCounts": [
+      6,
+      8,
+      8,
+      4,
+      5,
+      8,
+      6,
+      6,
+      6
+    ]
+  },
+  "assets": [
+    {
+      "id": "gpt",
+      "upstream": "pets/chatgpt-standard/spritesheet.webp",
+      "bytes": 1884570,
+      "sha256": "7967a167d1db9cab1bd69674432c8f4cac4e0a3e8437be504bf6be85b4ab1b6f"
+    },
+    {
+      "id": "claude",
+      "upstream": "pets/claude-standard/spritesheet.webp",
+      "bytes": 1762208,
+      "sha256": "5aa57a50f19bd8337dfcd3b98f67e289c0cc5c033a6e33946d6107d43ec59434"
+    },
+    {
+      "id": "deepseek",
+      "upstream": "pets/deepseek-standard/spritesheet.webp",
+      "bytes": 1587598,
+      "sha256": "aa717daf0013428b3af34ef3b98449e0243979e30ae4d479300d19d699f832b5"
+    }
+  ]
+}

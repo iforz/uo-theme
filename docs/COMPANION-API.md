@@ -34,3 +34,7 @@ PHP 过滤器 `uo_theme_companion_settings` 可以调整前端配置中的角色
 ## 交互与无障碍
 
 手机端为浮动入口，桌面端为右栏角色卡。弹窗支持 Escape、Tab 焦点循环和关闭后恢复焦点；系统减少动态偏好会关闭动画及逐字效果。回复只向辅助技术完整播报一次。无 JavaScript 时保留默认角色与欢迎文字，输入框保持禁用。
+
+## 0.3.0 社区动画
+
+角色图集在 `assets/mascots/community/`；素材来源/许可见同目录 NOTICE.md 和 provenance.json。后台「外观 → uo-theme 设置」管理启用、角色、尺寸与游走；每次访问从站点配置选择模型。`select()` 仍可供插件临时选择当前页面角色。`options.enabled=0` 时不初始化陪伴 API。`roaming.js` 播放八列九行图集，有效帧数依次为 6/8/8/4/5/8/6/6/6；不读取远程代码/模型，不发送消息至 AI 服务。
