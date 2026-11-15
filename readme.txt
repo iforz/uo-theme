@@ -2,17 +2,23 @@
 Contributors: iforz
 Requires at least: 6.6
 Requires PHP: 7.4
-Stable tag: 0.5.1
+Stable tag: 0.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
-A dependency-free block theme with editable navigation, blog templates, accessible focus styles, and light/dark style variations. Uses system fonts. Community mascot artwork is separately licensed for attributed noncommercial use; see assets/mascots/community/NOTICE.md. Decorative cover photos are separately under the Unsplash License; see assets/images/NOTICE.md.
+An editorial, dependency-free blog theme with a floating in-page management panel: write and publish posts, moderate comments, upload media, manage categories/tags and customise the site without opening wp-admin. The presentation core (assets/core) is engine-agnostic and documented in docs/MARKUP-CONTRACT.md and docs/ADAPTER.md; WordPress is wired through a small adapter using core REST and nonces. Uses system fonts. Community mascot artwork is separately licensed for attributed noncommercial use; see assets/mascots/community/NOTICE.md. Decorative cover photos are separately under the Unsplash License; see assets/images/NOTICE.md.
 
 == Installation ==
-Upload the ZIP under Appearance > Themes > Add New. Activate, then customize under Appearance > Editor. Set the reading mode under Settings > Reading.
+Upload the ZIP under Appearance > Themes > Add New and activate. Sign in, return to the site and use the "管理" dock (bottom-left, or Cmd/Ctrl + .) for all daily management.
 
 == Changelog ==
+= 0.6.0 =
+* Complete redesign: editorial typography, warm paper palette, configurable accent colour, feature story, card grid or list layout, category chips, reading-time metadata, table of contents with scroll spy, code copy buttons, image zoom, related posts, restyled comments and footer.
+* New floating management panel for signed-in editors: overview, posts/pages with a visual + HTML editor (Markdown shortcuts, paste cleanup, image upload/drag-drop, local draft recovery, scheduling, categories/tags/cover/excerpt), comment moderation and replies, media library, categories/tags, appearance and site settings with live preview. Replaces the public admin rail and wp-admin iframe.
+* Classic PHP templates with a documented markup contract; engine-agnostic core plus WordPress adapter; static reference port with a mock adapter.
+* Search palette (Cmd/Ctrl + K, "/") with live results; progressive navigation retained.
+
 = 0.5.1 =
 * Add three original AI-generated cartoon illustrations to the rotating cover pool; preserve authored featured images.
 

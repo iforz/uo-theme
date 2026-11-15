@@ -12,7 +12,7 @@ if ( ! is_dir( $target ) && ! mkdir( $target, 0755, true ) ) { exit( 1 ); }
 $path = "$target/uo-theme-$version.zip";
 $zip = new ZipArchive();
 if ( true !== $zip->open( $path, ZipArchive::CREATE | ZipArchive::OVERWRITE ) ) { exit( 1 ); }
-$paths = array( 'style.css', 'functions.php', 'theme.json', 'LICENSE', 'readme.txt', 'templates', 'parts', 'patterns', 'styles', 'assets', 'inc' );
+$paths = array_merge( array_map( 'basename', glob( "$root/*.php" ) ), array( 'style.css', 'theme.json', 'LICENSE', 'readme.txt', 'template-parts', 'assets', 'inc' ) );
 $files = array();
 foreach ( $paths as $relative ) {
 	if ( is_file( "$root/$relative" ) ) { $files[] = $relative; continue; }

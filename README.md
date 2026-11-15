@@ -1,73 +1,48 @@
 # uo-theme
 
-WordPress 双栏博客主题，版本 **0.2.0**。支持 WordPress 6.6+、PHP 7.4+，GPL-2.0-or-later。
+编辑部风格的博客主题，版本 **0.6.0**。WordPress 6.6+ / PHP 7.4+，GPL-2.0-or-later。
 
-## 安装
+- **前台**：暖纸色调 + 衬线标题，主题色可换；首页标题区、头条大卡、卡片网格 / 简洁列表两种布局、分类快捷筛选；文章页阅读时长、右侧目录（滚动高亮，窄屏浮动按钮）、代码复制、图片放大、复制正文 / 链接 / 分享、上一篇下一篇、相关文章、评论；`⌘K` / `/` 搜索面板（实时结果）；深色模式；无刷新页面切换；看板娘（社区角色）。
+- **管理面板浮窗**：登录后左下角出现「管理」浮标（`⌘/Ctrl + .`），在当前页面打开管理窗口，不再跳转 wp-admin：
+  - 概览（统计、快速草稿、最近草稿 / 发布）
+  - 文章 / 页面：列表、搜索、状态与分类筛选、回收站；可视化编辑器 + HTML 源码模式，Markdown 快捷输入（`## ` `> ` `- ` `1. ` ```` ``` ```` `---`），粘贴清洗，图片粘贴 / 拖拽上传，本机草稿恢复，定时发布、分类、标签、封面、摘要、评论开关、置顶，`⌘S` 保存
+  - 评论审核：通过、驳回、回复、垃圾、回收站
+  - 媒体库：拖拽上传、替代文本、复制链接、删除
+  - 分类与标签、外观（主题色、默认深浅、布局、首页文案、导航菜单、作者卡片与社交链接、看板娘、页脚备案）、站点设置
+  - 窗口可拖动、缩放、最大化，写作时自动全屏；手机端为全屏面板 + 底部标签栏
+- **跨引擎**：样式与交互在 `assets/core/`，只依赖[标记约定](docs/MARKUP-CONTRACT.md)；管理面板只调用 [`window.UOAdapter`](docs/ADAPTER.md)。WordPress 适配器在 `assets/adapters/wordpress.js`，`ports/static/` 是不依赖后端的参考实现（mock 适配器）。移植说明见 [ports/README.md](ports/README.md)。
 
-1. 在仓库运行 `php scripts/package.php` 生成 ZIP，产物保存在公司根目录 `app_packages/uo-theme/wordpress/0.2.0/`。
-2. 在 WordPress 后台进入「外观 → 主题 → 安装主题 → 上传主题」，选择 `uo-theme-0.2.0.zip`，安装并启用。
-3. 进入「外观 → 编辑器」，设置站点名称、Logo、导航与样式。原生导航区块支持移动端折叠菜单。
-4. 在「设置 → 阅读」选择首页显示最新文章，启用欢迎区与双栏文章列表；选择静态首页则使用常规页面模板。欢迎区、简介与区块内容可在站点编辑器内修改。
+## 安装与更新
 
-这是主题安装包，上传入口是「主题」。独立业务插件在有具体需求时另行开发。
+主题通过 WordPress 原生更新器读取本仓库 GitHub 最新稳定 Release（校验 SHA-256）。发布：同步提高 `style.css` 的 Version 与 `readme.txt` 的 Stable tag，运行检查，推送匹配标签（如 `v0.6.0`），Release 工作流自动打包发布；站点按定时任务更新，也可在后台手动更新。手动安装：「外观 → 主题 → 上传主题」。
 
-## 已包含
+> 0.6.0 起改为经典 PHP 模板，站点编辑器里保存过的旧区块模板不再生效（文章、评论、设置不受影响）。导航默认读取已有的 WordPress 菜单，可在面板「外观 → 导航菜单」覆盖。
 
-- 最新文章首页、文章详情（评论/分类/标签/上一篇和下一篇）、普通页面、归档、搜索、404、空白页面模板。
-- 可编辑页眉/页脚、Logo、导航、文章缩略图、分页、空结果提示。
-- `theme.json` 配色、字体、间距与宽度；默认浅色和 Forest night 深色样式。
-- 左侧文章流、右侧简介/分类/近文，手机单栏；明暗切换、阅读进度、回顶、搜索浮层与卡片动效。
-- GPT、Claude、DeepSeek 社区动态看板娘，支持自由行走、鼠标/触屏拖拽、暂停、收起、静态对话与站内推荐。在「外观 → uo-theme 设置」选择形象、尺寸和活动方式；桌面主体1080px，左侧为管理员保留竖向快捷菜单。默认不调用 AI；扩展方式见 [COMPANION-API.md](docs/COMPANION-API.md)。
-- 键盘焦点与减少动态支持；系统字体，无外部 CDN、追踪器或运行依赖。
-- 展示文案以中文为主，PHP 翻译函数使用 `uo-theme` 文本域。
+## 权限与安全
+
+面板只对已登录且具备 `edit_posts` 的用户输出；各标签按能力显示（`publish_posts`、`moderate_comments`、`upload_files`、`manage_categories`、`manage_options`），所有写操作由 WordPress REST 校验 Cookie + nonce 与能力。登录页面响应加 `nocache` 头，匿名 HTML 不含任何管理信息。主题自身只新增两个路由：`uo-theme/v1/settings`（`manage_options`）与 `uo-theme/v1/overview`（`edit_posts`）。可视化编辑器载入文章时会隔离脚本、内嵌框架和内联事件，保存时原样还原。
 
 ## 文件组织
 
 ```text
-assets/css/     前端和编辑器共用 CSS
-parts/          页眉与页脚
-assets/js/      原生交互与陪伴适配器
-assets/mascots/community/ 社区动画图集、固定来源与独立素材许可
-patterns/       可翻译的欢迎、搜索与提示区块
-styles/         全局样式变体
-templates/      WordPress 模板层级
-functions.php  主题初始化、样式加载
-theme.json     全局样式和编辑器配置
-scripts/       检查与封包（不进入安装包）
+assets/core/        跨引擎：uo.css / uo.js（前台）、panel.css / panel.js（管理面板）
+assets/adapters/    引擎适配器（wordpress.js）
+assets/css|js/      看板娘样式与脚本
+*.php, template-parts/  WordPress 经典模板（标记约定的参考实现）
+inc/                设置、REST、模板函数、更新器
+ports/              其他引擎移植说明与静态参考实现（不进入安装包）
+docs/               标记约定、适配器接口、验证记录
+scripts/ tests/     检查、封包与测试（不进入安装包）
 ```
 
 ## 开发与验证
 
-将源码目录复制或链接至本地 WordPress 的 `wp-content/themes/uo-theme` 后启用。
-
 ```sh
-php scripts/check.php
-php tests/settings.php
-php scripts/check.php /path/to/wordpress
-php scripts/package.php
+php scripts/check.php && php tests/settings.php && php tests/reading.php && php tests/updates.php
+node tests/core.mjs
+php scripts/package.php   # 产物：../app_packages/uo-theme/wordpress/<version>/
 ```
-
-第二条命令额外使用 WordPress 自身的区块解析器。检查涵盖 PHP 语法、JSON、元信息、区块嵌套与模板引用；不能替代运行站点、编辑器保存/刷新、移动端导航、分页/搜索和插件兼容测试。验证记录见 `docs/VALIDATION.md`。
-
-后台修改模板会保存在数据库，优先于源码模板。更新源码后若页面未变，请先导出需要保留的修改，再在站点编辑器重置对应自定义模板。切换主题不会删除文章。
-
-后续业务功能应通过插件实现，主题只负责展示。当前没有 WooCommerce 适配或演示内容导入器。
-
-## 参考
-
-- [WordPress Theme Structure](https://developer.wordpress.org/themes/core-concepts/theme-structure/)
-- [theme.json Reference](https://developer.wordpress.org/block-editor/reference-guides/theme-json-reference/)
-
-## 自动更新与发布
-
-启用主题后，在主题详情中开启自动更新，或运行 `wp theme auto-updates enable uo-theme`。主题通过原生 WordPress 更新器和 GitHub 官方 API 读取此仓库的最新稳定 Release，校验最低 WordPress/PHP 版本及 ZIP 的 SHA-256。站点需能访问 GitHub，并具备主题目录写权限与正常的 WordPress 定时任务。网络失败时保留当前主题。
-
-发布步骤：同步提高 `style.css` 的 Version 和 `readme.txt` 的 Stable tag，运行检查与 `php tests/updates.php`，提交后推送匹配的版本标签（例如 `v0.2.0`）。Release 工作流自动验证标签、打包并发布安装 ZIP、更新清单和校验文件。只有正式标签发布触发站点更新，普通开发提交不会触发。不要编辑已发布标签或替换其资产；修复应发布新版本。
-
-WordPress 按自身定时任务检查与安装，更新存在间隔，不保证实时。当前更新回调随启用的主题加载；切换到无关主题后，不承诺后台继续更新 uo-theme。站点级定制请用子主题或站点编辑器，直接修改主题文件会被新版覆盖。
 
 ## 社区素材许可
 
-当前动画来自 [savanna0425/llm-pet](https://github.com/savanna0425/llm-pet) 固定 commit `fdd821feb49b294ea8abe42c9cf41e6c52e3aacf`，原始文件未修改，哈希见 `assets/mascots/community/provenance.json`。形象作者 **ZipZipPipe**，DeepSeek 原设 **上善**。这些是非官方同人，要求署名、非商业使用；DeepSeek 另遵循 **CC BY-NC-SA 4.0**。请阅读包内 `assets/mascots/community/NOTICE.md`。美术不受主题代码的 GPL 许可覆盖，商业站点应停用/移除这些素材并换为有相应授权的角色。旧生成立绘保留于 Git 历史/源码，安装包不包含它们。
-
-前端不从第三方域名加载角色，动画播放器为本主题的无依赖九行动作图集适配代码。减少动态时停止动画和游走；后台角色选择为站点默认值，不受旧浏览器角色偏好覆盖。
+看板娘动画来自 [savanna0425/llm-pet](https://github.com/savanna0425/llm-pet) 固定 commit `fdd821feb49b294ea8abe42c9cf41e6c52e3aacf`，形象作者 **ZipZipPipe**，DeepSeek 原设 **上善**；非官方同人，署名、非商业使用，DeepSeek 另遵循 **CC BY-NC-SA 4.0**，见 `assets/mascots/community/NOTICE.md`。美术不受主题代码 GPL 覆盖，商业站点应停用这些素材。示意封面见 `assets/images/NOTICE.md`。

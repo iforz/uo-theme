@@ -1,71 +1,39 @@
 <?php
-/** Static checks, optionally using the actual WordPress block parser. */
+/** Static checks: PHP syntax, JSON, metadata, template inventory and markup-contract hooks. */
 $root = dirname( __DIR__ );
 $errors = array();
 function check_result( $condition, $message ) {
 	global $errors;
 	if ( ! $condition ) { $errors[] = $message; }
 }
-foreach ( array_merge( glob( "$root/*.php" ), glob( "$root/inc/*.php" ), glob( "$root/patterns/*.php" ), glob( "$root/scripts/*.php" ) ) as $file ) {
+$php = array_merge( glob( "$root/*.php" ), glob( "$root/inc/*.php" ), glob( "$root/template-parts/*.php" ), glob( "$root/scripts/*.php" ), glob( "$root/tests/*.php" ) );
+foreach ( $php as $file ) {
 	exec( escapeshellarg( PHP_BINARY ) . ' -l ' . escapeshellarg( $file ) . ' 2>&1', $output, $status );
 	check_result( 0 === $status, "PHP syntax: $file" );
 }
-foreach ( array_merge( array( "$root/theme.json" ), glob( "$root/styles/*.json" ) ) as $file ) {
-	$data = json_decode( file_get_contents( $file ), true );
-	check_result( JSON_ERROR_NONE === json_last_error() && 3 === ( $data['version'] ?? null ), "Theme JSON: $file" );
-}
+$data = json_decode( file_get_contents( "$root/theme.json" ), true );
+check_result( JSON_ERROR_NONE === json_last_error() && 3 === ( $data['version'] ?? null ), 'theme.json' );
 $css = file_get_contents( "$root/style.css" );
 foreach ( array( 'Theme Name: uo-theme', 'Text Domain: uo-theme', 'Update URI: https://github.com/iforz/uo-theme', 'Requires at least: 6.6', 'Requires PHP: 7.4' ) as $header ) {
 	check_result( false !== strpos( $css, $header ), "Missing header $header" );
 }
-if ( isset( $argv[1] ) ) {
-	$parser = rtrim( $argv[1], '/' ) . '/wp-includes/class-wp-block-parser.php';
-	if ( ! is_file( $parser ) ) { fwrite( STDERR, "WordPress source not found: $parser\n" ); exit( 1 ); }
-	require $parser;
+// Classic theme: block templates would switch WordPress into block-theme mode.
+check_result( ! is_dir( "$root/templates" ), 'templates/ must not exist (classic theme)' );
+foreach ( array( 'index.php', 'single.php', 'page.php', '404.php', 'header.php', 'footer.php', 'comments.php', 'searchform.php', 'template-parts/card.php', 'template-parts/card-feature.php', 'template-parts/card-row.php', 'template-parts/companion.php' ) as $template ) {
+	check_result( is_file( "$root/$template" ), "Missing template $template" );
 }
-$files = array_merge( glob( "$root/templates/*.html" ), glob( "$root/parts/*.html" ), glob( "$root/patterns/*.php" ) );
-foreach ( $files as $file ) {
-	$content = file_get_contents( $file );
-	if ( 'php' === pathinfo( $file, PATHINFO_EXTENSION ) ) {
-		// Render PHP patterns with isolated WordPress escaping/translation helpers.
-		if ( ! defined( 'ABSPATH' ) ) {
-			define( 'ABSPATH', $root );
-			function esc_html_e( $text, $domain ) { echo htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' ); }
-			function esc_attr__( $text, $domain ) { return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' ); }
-			function esc_url( $url ) { return htmlspecialchars( $url, ENT_QUOTES, 'UTF-8' ); }
-			function home_url( $path ) { return 'https://example.test' . $path; }
-			function esc_html( $text ) { return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' ); }
-			function get_theme_file_uri( $path ) { return 'https://example.test/wp-content/themes/uo-theme/' . $path; }
-			function get_theme_file_path( $path ) { return dirname( __DIR__ ) . '/' . $path; }
-			function wp_count_posts() { return (object) array( 'publish' => 87 ); }
-			function uo_theme_footer_options() { return array( 'copyright' => '© Example', 'icp' => '' ); }
-			function get_feed_link() { return 'https://example.test/feed/'; }
-		}
-		ob_start(); require $file; $content = ob_get_clean();
-	}
-	preg_match_all( '/<!--\s+(\/)?wp:([a-z0-9\/-]+)(.*?)-->/s', $content, $matches, PREG_SET_ORDER );
-	$stack = array();
-	foreach ( $matches as $match ) {
-		$name = $match[2]; $attributes = trim( $match[3] );
-		if ( '/' === $match[1] ) {
-			check_result( array_pop( $stack ) === $name, "Mismatched block $name in $file" );
-			continue;
-		}
-		$self_closing = '/' === substr( $attributes, -1 );
-		$json = trim( $self_closing ? substr( $attributes, 0, -1 ) : $attributes );
-		if ( '' !== $json ) {
-			$attrs = json_decode( $json, true );
-			check_result( JSON_ERROR_NONE === json_last_error(), "Invalid block JSON in $file: $json" );
-			if ( 'template-part' === $name ) { check_result( is_file( "$root/parts/{$attrs['slug']}.html" ), "Missing template part in $file" ); }
-			if ( 'pattern' === $name ) { check_result( is_file( "$root/patterns/" . basename( $attrs['slug'] ) . '.php' ), "Missing pattern in $file" ); }
-		}
-		if ( ! $self_closing ) { $stack[] = $name; }
-	}
-	check_result( empty( $stack ), "Unclosed blocks in $file" );
-	if ( class_exists( 'WP_Block_Parser' ) ) {
-		$blocks = ( new WP_Block_Parser() )->parse( $content );
-		check_result( count( $blocks ) > 0, "WordPress parser returned no blocks in $file" );
-	}
+foreach ( array( 'assets/core/css/uo.css', 'assets/core/css/panel.css', 'assets/core/js/uo.js', 'assets/core/js/panel.js', 'assets/adapters/wordpress.js', 'assets/css/companion.css', 'assets/js/companion.js', 'assets/js/roaming.js' ) as $asset ) {
+	check_result( is_file( "$root/$asset" ) && filesize( "$root/$asset" ) > 200, "Missing asset $asset" );
+}
+// Markup contract hooks used by the engine-agnostic JS must be present in templates.
+$templates = implode( "\n", array_map( 'file_get_contents', array_merge( glob( "$root/*.php" ), glob( "$root/template-parts/*.php" ), array( "$root/inc/reading.php" ) ) ) );
+foreach ( array( 'id="uo-main"', 'data-uo-content', 'data-uo-toc', 'data-uo-progress', 'data-uo-top', 'data-uo-scheme-toggle', 'data-uo-search-open', 'id="uo-search"', 'data-uo-search-results', 'data-uo-actions', 'data-uo-menu-toggle' ) as $hook ) {
+	check_result( false !== strpos( $templates, $hook ), "Markup contract hook missing: $hook" );
+}
+// Core JS stays engine-agnostic.
+foreach ( array( 'assets/core/js/uo.js', 'assets/core/js/panel.js', 'assets/core/css/uo.css', 'assets/core/css/panel.css' ) as $core ) {
+	$src = file_get_contents( "$root/$core" );
+	check_result( false === stripos( $src, 'wp-json' ) && false === strpos( $src, 'wp/v2' ) && false === strpos( $src, '--wp--' ), "Core file references WordPress internals: $core" );
 }
 if ( $errors ) { fwrite( STDERR, implode( "\n", $errors ) . "\n" ); exit( 1 ); }
-echo 'PASS: PHP syntax, JSON, metadata, block nesting and template references (' . count( $files ) . ' files)' . ( class_exists( 'WP_Block_Parser' ) ? '; WordPress block parser PASS' : '' ) . ".\n";
+echo 'PASS: PHP syntax (' . count( $php ) . " files), theme.json, metadata, classic template inventory, assets and markup contract.\n";
