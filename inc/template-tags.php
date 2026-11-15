@@ -54,8 +54,10 @@ function uo_theme_cover( $post = null, $size = 'large', $eager = false ) {
 	if ( has_post_thumbnail( $post ) ) {
 		return get_the_post_thumbnail( $post, $size, array( 'loading' => $loading, 'decoding' => 'async', 'alt' => '', 'sizes' => '(max-width: 760px) 100vw, 600px' ) );
 	}
-	$names = uo_theme_cover_names();
-	$src = add_query_arg( 'ver', wp_get_theme()->get( 'Version' ), get_theme_file_uri( 'assets/images/' . $names[ $post->ID % count( $names ) ] . '.webp' ) );
+	// Random per request without repeats until the pool is exhausted (decided server-side, so images load once).
+	static $bag = array();
+	if ( ! $bag ) { $bag = uo_theme_cover_names(); shuffle( $bag ); }
+	$src = add_query_arg( 'ver', wp_get_theme()->get( 'Version' ), get_theme_file_uri( 'assets/images/' . array_pop( $bag ) . '.webp' ) );
 	return '<img data-uo-cover src="' . esc_url( $src ) . '" width="960" height="640" alt="" loading="' . $loading . '" decoding="async">';
 }
 

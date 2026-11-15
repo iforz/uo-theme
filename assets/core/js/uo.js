@@ -178,17 +178,6 @@
     } catch (err) { say(err.name === 'AbortError' ? '已取消分享' : '无法自动复制，请使用浏览器菜单'); }
   });
 
-  /* Decorative fallback covers rotate; authored images are never touched. */
-  const covers = (config.covers || []).filter(src => { try { return new URL(src, location.href).origin === location.origin; } catch (_) { return false; } });
-  UO.onContent(scope => {
-    if (covers.length < 2) return;
-    let bag = [];
-    $$('img[data-uo-cover]', scope).forEach(img => {
-      if (!bag.length) { bag = [...covers]; for (let i = bag.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [bag[i], bag[j]] = [bag[j], bag[i]]; } }
-      img.src = bag.pop();
-    });
-  });
-
   /* Search palette: ⌘K / Ctrl+K / "/" */
   const dlg = $('#uo-search');
   if (dlg && typeof dlg.showModal === 'function') {

@@ -426,6 +426,8 @@ body.uo {
 }
 @media (max-width: 760px) {
   :root { --uo-header-h: 58px; }
+  .uo-fab-stack { right: 12px; bottom: 14px; }
+  .uo-fab { width: 40px; height: 40px; border-radius: 12px; }
   .uo-menu-toggle { display: inline-flex; }
   .uo-nav { position: fixed; inset: var(--uo-header-h) 0 auto; margin: 0; padding: 10px var(--uo-gutter) 18px; background: color-mix(in srgb, var(--uo-bg) 94%, transparent); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--uo-line); transform: translateY(-8px); opacity: 0; visibility: hidden; transition: opacity .25s, transform .3s var(--uo-ease), visibility .25s; }
   .uo-nav-open .uo-nav { opacity: 1; visibility: visible; transform: none; }

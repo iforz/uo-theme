@@ -2,7 +2,7 @@
 Contributors: iforz
 Requires at least: 6.6
 Requires PHP: 7.4
-Stable tag: 0.6.0
+Stable tag: 0.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,6 +13,9 @@ An editorial, dependency-free blog theme with a floating in-page management pane
 Upload the ZIP under Appearance > Themes > Add New and activate. Sign in, return to the site and use the "管理" dock (bottom-left, or Cmd/Ctrl + .) for all daily management.
 
 == Changelog ==
+= 0.6.1 =
+* Pick decorative fallback covers server-side (random, no repeats per page) so each image downloads once; smaller floating buttons on phones.
+
 = 0.6.0 =
 * Complete redesign: editorial typography, warm paper palette, configurable accent colour, feature story, card grid or list layout, category chips, reading-time metadata, table of contents with scroll spy, code copy buttons, image zoom, related posts, restyled comments and footer.
 * New floating management panel for signed-in editors: overview, posts/pages with a visual + HTML editor (Markdown shortcuts, paste cleanup, image upload/drag-drop, local draft recovery, scheduling, categories/tags/cover/excerpt), comment moderation and replies, media library, categories/tags, appearance and site settings with live preview. Replaces the public admin rail and wp-admin iframe.

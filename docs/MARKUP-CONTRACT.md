@@ -48,13 +48,12 @@ the reference implementation; `ports/static/` is a framework-free HTML version o
 | Tags / prev-next / related | `.uo-tags`, `.uo-postnav`, `.uo-related` | |
 | Comments | `.uo-comments`, `.uo-comment-list`, `.uo-comment` | Form classes follow WordPress (`.comment-form`); other engines may reuse them |
 
-Decorative fallback covers use `<img data-uo-cover>`; `uo.js` rotates them from `UOThemeConfig.covers`.
+Decorative fallback covers use `<img data-uo-cover>`; pick them server-side (the WordPress adapter shuffles per request) so each image downloads once.
 
 ## Configuration object (optional)
 
 ```js
 window.UOThemeConfig = {
-  covers: ['/img/a.webp', …],                 // rotating fallback covers
   search: { api: '/api/search?q=%s', page: '/search', param: 'q' }, // api returns [{title,url,type}] or {items:[…]}
   pjax: true,                                 // progressive navigation (needs #uo-main)
   noNavigate: '/(admin|api)(/|$)',            // RegExp source of paths that must load normally
